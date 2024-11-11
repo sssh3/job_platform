@@ -1,0 +1,75 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore node_modules, if you use Node.js tools
+node_modules/
+
+# Ignore Composer dependencies
+/vendor/
+
+# Ignore environment and configuration files
+.env
+/config/*.php
+
+# Ignore IDE/editor specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Ignore logs and temporary files
+/logs/*
+/tmp/*
+
+# Ignore compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Ignore specific file extensions
+*.swp
+*.bak
+*.tmp
+*.orig
+
+# Ignore uploads and storage files
+/storage/*
+!/storage/.gitkeep
+
+# Ignore cache and session files
+/cache/*
+/sessions/*
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore built assets
+/public/assets/build/
+/public/assets/*.map
+
+# Ignore Composer lock file if you do not want to commit it
+# composer.lock
+
+# Ignore database files
+*.sql
+*.sqlite
+
+# Ignore image thumbnails
+*.thumb
+
+# Ignore PHPUnit result logs
+phpunit.result.cache
+
+# Ignore any other generated files
+*.log
+
+# Ignore user-specific files
+*.user
+
+# Ignore XAMPP specific files
+/xamppfiles/
+
