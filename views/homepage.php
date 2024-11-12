@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="/job_platform/assets/css/style.css">
 </head>
 <body>
-    <?php include 'assets/header.html'; ?>
+    <?php include 'header.html'; ?>
 
     <main>
         <h2>Home Page</h2>
         <p>This is the main content of the home page.</p>
     </main>
 
-    <?php include 'assets/footer.html'; ?>
+    <?php include 'footer.html'; ?>
 </body>
 </html>

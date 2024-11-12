@@ -4,23 +4,15 @@
 ## Project Structure
 ```
 index.php: Entry point for the application.
-/public: Contains all publicly accessible files.
-    .htaccess: For URL rewriting and other Apache configurations.
-    /assets: Contains static files like CSS, JavaScript, and images.
-        /css: Stylesheets.
-        /js: JavaScript files.
-        /images: Images.
-/src: Contains the application source code.
-    /controllers: Handles request routing and business logic.
-    /models: Contains database interaction code.
-    /views: HTML templates and views.
-    /helpers: Utility classes and functions.
+.htaccess: For URL rewriting and other Apache configurations.
+/assets: Contains static files like CSS, JavaScript, and images.
+    /css: Stylesheets.
+    /js: JavaScript files.
+    /images: Images.
+/views: HTML templates and views.
 /config: Configuration files for database connection, settings, etc.
     database.php
     config.php
-/storage: For file uploads and other persistent storage needs.
-/vendor: Composer dependencies (if using PHP packages).
-composer.json: PHP dependencies (if using Composer).
 ```
 
 ## Version Control Instruction
@@ -33,7 +25,7 @@ git config --global user.email "your.email@example.com"
 
 ### Project Clone
 ```
-git clone https://github.com/your-organization/your-repo.git
+git clone https://github.com/sssh3/dms_job_platform
 ```
 
 ### Make Your Own Change
@@ -41,8 +33,8 @@ Please keep the `main` branch as the stable version.
 Each team member should create their own branch for new features or bug fixes. This can be done using:
 ```
 git checkout -b feature-branch-name
+git pull # keep updated with the main branch
 ```
-**Branch Naming:** Use a consistent naming convention, like `feature/login-page` or `bugfix/upload-error`.
 
 ### Push Your Change
 1. Make sure you are on your branch. Use `git branch` to check, `git checkout your-branch-name` to switch branch.
