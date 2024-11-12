@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/job_platform/assets/css/style.css">
 </head>
 <body>
-    <?php include 'header.html'; ?>
+    <?php include 'header.php'; ?>
 
     <div id="markdown-content">
         <!-- The converted markdown content will be inserted here -->

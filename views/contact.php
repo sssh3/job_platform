@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="/job_platform/assets/css/style.css">
 </head>
 <body>
-    <?php include 'header.html'; ?>
+    <?php include 'header.php'; ?>
 
     <main>
-        <h1>Contact Us</h1>
+        <h2>Contact Us</h2>
         <p>Name: Chen, Jiayou</p>
         <p>E-mail: r130018006@mail.uic.edu.cn</p>
     </main>

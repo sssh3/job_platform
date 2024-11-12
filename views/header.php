@@ -1,0 +1,28 @@
+<?php session_start(); ?>
+
+<!DOCTYPE html>
+<header>
+    <!-- <h1>Welcome to Our Job-seeking Platform</h1> -->
+    <nav>
+        <!-- Logo wrapped in a link to the homepage -->
+        <a href="/job_platform/">
+            <img src="/job_platform/assets/images/logo.svg" alt="Logo" width="289" height="74">
+        </a>
+        <ul>
+            <li><a href="/job_platform/">Home</a></li>
+            <!-- <li><a href="/job_platform/login">Login</a></li> -->
+            <li><a href="/job_platform/readme">Readme</a></li>
+            <li><a href="/job_platform/contact">Contact</a></li>
+        </ul>
+
+        <ul>
+            <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
+                <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                <li><a href="/job_platform/utils/logout.php">Logout</a></li>
+            <?php else: ?>
+                <p>You are not logged in</p>
+                <li><a href="/job_platform/login">Login</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+</header>

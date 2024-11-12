@@ -1,0 +1,8 @@
+
+RewriteEngine On
+
+RewriteRule ^/$ index.php [L]
+RewriteRule ^readme$ views/readme.php [L]
+RewriteRule ^about$ views/readme.php [L]
+RewriteRule ^contact$ views/contact.php [L]
+RewriteRule ^login$ views/login.php [L]

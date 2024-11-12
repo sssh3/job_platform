@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/job_platform/assets/css/style.css">
 </head>
 <body>
-    <?php include 'header.html'; ?>
+    <?php include 'header.php'; ?>
 
     <main>
         <h2>Home Page</h2>
