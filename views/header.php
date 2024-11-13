@@ -17,11 +17,18 @@
 
         <ul>
             <?php if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true): ?>
-                <p>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                <p>Welcome, 
+                    <?php 
+                        if (isset($_SESSION["type"])) {echo htmlspecialchars($_SESSION['type']);};
+                        echo "<br>";
+                        if (($_SESSION["type"] == 'job-seeker') || ($_SESSION["type"] == 'employer')){
+                            echo htmlspecialchars($_SESSION["username"]);}
+                    ?>
+                </p>
                 <li><a href="/job_platform/utils/logout.php">Logout</a></li>
             <?php else: ?>
                 <p>You are not logged in</p>
-                <li><a href="/job_platform/login">Login</a></li>
+                <li><a href="/job_platform/login">Login/Register</a></li>
             <?php endif; ?>
         </ul>
     </nav>

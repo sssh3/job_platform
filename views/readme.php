@@ -36,6 +36,6 @@
                 document.getElementById('markdown-content').innerHTML = '<p>Error loading content.</p>';
             });
     </script>
-    <?php include 'footer.html'; ?>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

@@ -116,3 +116,51 @@ footer ul a:hover {
         margin: 5px 0;
     }
 }
+
+form {
+    width: 40%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.responsive-input {
+    width: 90%; /* Use a percentage to make it responsive */
+    max-width: 500px; /* Set a maximum width */
+    height: 20px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+input[type="submit"] {
+    margin-top: 10px;
+    width: 30%;
+    padding: 3px;
+    background-color: rgb(12	91	171	);
+    color: white;
+    border-radius: 4px;
+}
+
+input[type="button"] {
+    margin-top: 2px;
+    width: 30%;
+    padding: 3px;
+    background-color: rgb(12	91	171	);
+    color: white;
+    border-radius: 4px;
+}

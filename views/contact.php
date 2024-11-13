@@ -14,6 +14,6 @@
         <p>E-mail: r130018006@mail.uic.edu.cn</p>
     </main>
 
-    <?php include 'footer.html'; ?>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

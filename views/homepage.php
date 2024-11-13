@@ -13,6 +13,6 @@
         <p>This is the main content of the home page.</p>
     </main>
 
-    <?php include 'footer.html'; ?>
+    <?php include 'footer.php'; ?>
 </body>
 </html>
