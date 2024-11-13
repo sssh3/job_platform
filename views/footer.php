@@ -2,7 +2,7 @@
     <p>2024 Database Management Systems Group Project</p>
     <p><?php
         // Read the file into an array of lines
-        if (isset($_SESSION["type"]) && ($_SESSION["type"] == "job-seeker" || $_SESSION["type"] == "job-seeker")){
+        if (isset($_SESSION["type"]) && ($_SESSION["type"] == "job-seeker" || $_SESSION["type"] == "employer")){
                 $type = $_SESSION["type"];
         } else {
             if (rand(0,1) == 1) {
@@ -17,7 +17,7 @@
         if ($messages) {
             // Select a random message
             $randomMessage = $messages[array_rand($messages)];
-            echo "For a " . $type . ": " . $randomMessage;
+            echo "For " . $type . "s: " . $randomMessage;
         } else {
             // Fallback message if file is empty or not found
             echo "Welcome to our site!";
