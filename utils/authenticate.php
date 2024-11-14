@@ -23,6 +23,7 @@ if (isset($_POST['action'])) {
     // Get user input
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $usertype = $_POST['usertype'];
 
     // Prevent SQL Injection
     $username = $conn->real_escape_string($username);
@@ -33,6 +34,10 @@ if (isset($_POST['action'])) {
     $password = 'visitor';
     $_POST['action'] = 'Login';
 }
+
+// Record sql time
+$start_time = microtime(true);
+
 if ($_POST['action'] === 'Login') {
     // Verify user
     $sql = "SELECT * FROM users WHERE user_name='$username' AND `password`='$password'";
@@ -42,7 +47,10 @@ if ($_POST['action'] === 'Login') {
         $_SESSION['username'] = $username;
         $_SESSION['logged_in'] = true;
         $_SESSION["type"] = $result->fetch_assoc()["user_type"];
-        // echo "Login successful! Welcome, " . $username;
+        // Print time used on page
+        $time_used = microtime(true) - $start_time;
+        $_SESSION["msg"] =  "SQL time used : " . round($time_used, 4) . "s";
+
         header("Location: /job_platform/");
     } else {
         // Invalid credentials
@@ -61,9 +69,12 @@ if ($_POST['action'] === 'Login') {
     }
     // Set user_type to 'job-seeker' for temp
     $sql = "INSERT INTO users (user_name, `password`, user_type) 
-            VALUES ('$username', '$password', 'job-seeker')";
+            VALUES ('$username', '$password', '$usertype')";
     $conn->query($sql);
-    $_SESSION["msg"] = "Register success by name \"$username\".";
+    $_SESSION["msg"] = "Register success by name \"$username\" as a $usertype.";
+    // Print time used on page
+    $time_used = microtime(true) - $start_time;
+    $_SESSION["msg"] =  $_SESSION["msg"] . "<br>SQL time used : " . round($time_used, 4) . "s";
     header("Location: /job_platform/login");
 }
 

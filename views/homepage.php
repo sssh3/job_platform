@@ -7,7 +7,11 @@
 </head>
 <body>
     <?php include 'header.php'; ?>
-
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
     <main>
         <h2>Home Page</h2>
         <p>This is the main content of the home page.</p>
