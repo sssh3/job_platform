@@ -12,7 +12,7 @@
             <li><a href="/job_platform/">Home</a></li>
 
             <!-- TODO -->
-            <li><a href="/job_platform/">Job Market</a></li>
+            <li><a href="/job_platform/jobs">Browse Jobs</a></li>
             <!-- TODO -->
 
             <li><a href="/job_platform/readme">Readme</a></li>
