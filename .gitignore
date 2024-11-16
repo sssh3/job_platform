@@ -54,9 +54,7 @@ node_modules/
 # Ignore Composer lock file if you do not want to commit it
 # composer.lock
 
-# Ignore database files
-*.sql
-*.sqlite
+
 
 # Ignore image thumbnails
 *.thumb
