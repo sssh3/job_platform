@@ -8,9 +8,9 @@ node_modules/
 # Ignore Composer dependencies
 /vendor/
 
-# Ignore environment and configuration files
+# Ignore environment 
 .env
-/config/*.php
+# /config/*.php
 
 # Ignore IDE/editor specific files
 .idea/

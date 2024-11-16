@@ -70,4 +70,6 @@ elevation : in meters, integer
 dem : digital elevation model, srtm3 or gtopo30, average elevation of 3''x3'' (ca 90mx90m) or 30''x30'' (ca 900mx900m) area in meters, integer. srtm processed by cgiar/ciat.
 timezone : the iana timezone id (see file timeZone.txt) varchar(40)
 modification date : date of last modification in yyyy-MM-dd format
+
+used columns: `asciiname` for `city_name`, `cc2` for `country_code`
 ```
