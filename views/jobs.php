@@ -19,9 +19,17 @@
         <div class="filter-options">
             <h2>Filter Options</h2>
             <!-- Add your filter options here -->
-            <form>
-                <label for="location">Location:</label>
-                <input type="text" id="location" name="location"><br>
+            
+            <form class="filter-form">
+                <label>Location:</label>
+                <input type="text" id="search-country" name="search-country" placeholder="search for country/region" autocomplete="off"><br>
+                <div id="dropdown-country"></div>
+                <script src="/job_platform/assets/js/searchCountry.js"></script>
+                <br>
+                <input type="text" id="search-city" name="search-city" placeholder="search for city" autocomplete="off"><br>
+                <div id="dropdown-city"></div>
+                <script src="/job_platform/assets/js/searchCity.js"></script>
+                <br>
 
                 <label for="type">Job Type:</label>
                 <select id="type" name="type">
@@ -30,7 +38,11 @@
                     <option value="contract">Contract</option>
                 </select>
                 <br>
+                <br>
 
+                <label>Job Title:</label>
+                <input type="text" id="search-title" name="search-title" placeholder="search in job titles" autocomplete="off"><br>
+                <br>
                 <button type="submit">Apply Filters</button>
             </form>
         </div>

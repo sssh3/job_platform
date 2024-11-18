@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Searchable Dropdown</title>
+    <style>
+        #dropdown-country {
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            position: absolute;
+            background-color: white;
+            z-index: 1000;
+        }
+        .dropdown-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+        .dropdown-item:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="search-country" placeholder="Type to search..." autocomplete="off">
+    <div id="dropdown-country"></div>
+
+    <script src="/job_platform/assets/js/searchCountry.js"></script>
+</body>
+</html>
