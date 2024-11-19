@@ -46,7 +46,17 @@ if ($_POST['action'] === 'Login') {
         // Successful login
         $_SESSION['username'] = $username;
         $_SESSION['logged_in'] = true;
-        $_SESSION["type"] = $result->fetch_assoc()["user_type"];
+
+        // Store user_type_name in $_SESSION["type"]
+        $result = $conn->query("SELECT user_type_name FROM user_types 
+                                JOIN users ON users.user_name = '$username'
+                                    AND users.user_type_id = user_types.user_type_id
+                                ");
+        $row = $result->fetch_assoc();
+        $_SESSION["type"] = $row["user_type_name"];
+        $test_str = implode(",", $row);
+        echo "$test_str<br>";
+
         // Print time used on page
         $time_used = microtime(true) - $start_time;
         $_SESSION["msg"] =  "SQL time used : " . round($time_used, 4) . "s";
@@ -67,9 +77,15 @@ if ($_POST['action'] === 'Login') {
         header("Location: /job_platform/login");
         exit;
     }
-    // Set user_type to 'job-seeker' for temp
-    $sql = "INSERT INTO users (user_name, `password`, user_type) 
-            VALUES ('$username', '$password', '$usertype')";
+
+    // Get user_type_id
+    $sql = "SELECT user_type_name FROM user_types WHERE user_type_name = '$usertype'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $userTypeId = $row['user_type_name'];
+    
+    $sql = "INSERT INTO users (user_name, `password`, user_type_id) 
+            VALUES ('$username', '$password', '$userTypeId')";
     $conn->query($sql);
     $_SESSION["msg"] = "Register success by name \"$username\" as a $usertype.";
     // Print time used on page
