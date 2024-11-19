@@ -10,9 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const countryValue = inputCountry.value;
         const provinceValue = inputProvince.value;
 
-        const test = document.getElementById("test");
-        test.value = `/job_platform/utils/search_location.php?country=${encodeURIComponent(countryValue)}&province=${encodeURIComponent(provinceValue)}&city=${encodeURIComponent(query)}`
-
         if (query.length > 0 && countryValue !== '' && provinceValue !== '') {
             fetch(`/job_platform/utils/search_location.php?country=${encodeURIComponent(countryValue)}&province=${encodeURIComponent(provinceValue)}&city=${encodeURIComponent(query)}`)
                 .then(response => response.json())
@@ -45,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchInput.value = ''; // Clear input only if no item was selected
             }
         }
+    });
+
+    searchInput.addEventListener('focus', function() {
+        dropdownSelected = false;
     });
     
 });

@@ -42,4 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    searchInput.addEventListener('focus', function() {
+        dropdownSelected = false;
+    });
+
 });
