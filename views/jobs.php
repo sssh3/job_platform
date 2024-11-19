@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Home Page</title>
     <link rel="stylesheet" href="/job_platform/assets/css/style.css">
+    <style>
+            input[type="submit"] {
+                width : 60%;
+                visibility: hidden;
+            }
+    </style>
 </head>
 
 <body>
@@ -17,33 +23,38 @@
 
     <div class="container">
         <div class="filter-options">
-            <h2>Filter Options</h2>
+            <h2>Filters</h2>
             <!-- Add your filter options here -->
             
             <form class="filter-form">
                 <label>Location:</label>
-                <input type="text" id="search-country" name="search-country" placeholder="search for country/region" autocomplete="off"><br>
+                <input type="text" id="search-country" name="search-country" placeholder="select country/region" autocomplete="off"><br>
                 <div id="dropdown-country"></div>
                 <script src="/job_platform/assets/js/searchCountry.js"></script>
                 <br>
-                <input type="text" id="search-city" name="search-city" placeholder="search for city" autocomplete="off"><br>
+                <input type="text" id="search-province" name="search-province" placeholder="select province/state" autocomplete="off"><br>
+                <div id="dropdown-province"></div>
+                <script src="/job_platform/assets/js/searchProvince.js"></script>
+                <br>
+                <input type="text" id="search-city" name="search-city" placeholder="select city" autocomplete="off"><br>
                 <div id="dropdown-city"></div>
                 <script src="/job_platform/assets/js/searchCity.js"></script>
                 <br>
+                <p id="test"></p>
 
-                <label for="type">Job Type:</label>
-                <select id="type" name="type">
+                <label for="job-type">Job Type:</label>
+                <select id="job-type" name="job-type">
                     <option value="full-time">Full-time</option>
                     <option value="part-time">Part-time</option>
                     <option value="contract">Contract</option>
+                    <option value="internship">Internship</option>
                 </select>
                 <br>
                 <br>
 
                 <label>Job Title:</label>
                 <input type="text" id="search-title" name="search-title" placeholder="search in job titles" autocomplete="off"><br>
-                <br>
-                <button type="submit">Apply Filters</button>
+                <input type="submit" value="Apply Filters"></input>
             </form>
         </div>
 
@@ -56,23 +67,7 @@
                     <a href="#" target="_blank">Apply Now</a>
                 </div>
             </li>
-            <li>
-                <div class="job-title">Data Scientist</div>
-                <div class="job-details">
-                    <p>Location: New York, NY</p>
-                    <p>Description: Analyze data to provide insights and drive business decisions.</p>
-                    <a href="#" target="_blank">Apply Now</a>
-                </div>
-            </li>
-            <li>
-                <div class="job-title">Product Manager</div>
-                <div class="job-details">
-                    <p>Location: Remote</p>
-                    <p>Description: Lead product development and strategy execution.</p>
-                    <a href="#" target="_blank">Apply Now</a>
-                </div>
-            </li>
-            <!-- Add more job positions here -->
+            <script src="/job_platform/assets/js/jobList.js"></script>
         </ul>
 
         <div class="job-details">

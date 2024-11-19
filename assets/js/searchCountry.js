@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('search-country');
     const dropdown = document.getElementById('dropdown-country');
+    let dropdownSelected = false;
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value;
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         div.onclick = () => {
                             searchInput.value = item.name;
                             dropdown.style.display = 'none';
+                            dropdownSelected = true;
                         };
                         dropdown.appendChild(div);
                     });
@@ -29,8 +31,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.addEventListener('click', function(event) {
+        // Check if the click is outside of the dropdown and the input field
         if (!dropdown.contains(event.target) && event.target !== searchInput) {
             dropdown.style.display = 'none';
+            if (!dropdownSelected && searchInput.value !== '') {
+                searchInput.value = ''; // Clear input only if no item was selected
+            }
         }
     });
+    
 });

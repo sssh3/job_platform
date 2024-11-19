@@ -47,16 +47,6 @@ try {
         $sql = file_get_contents(__DIR__ . '/../assets/data/iso3166.sql');
         $conn->exec($sql);
 
-        // Create cities table
-        $sql = "CREATE TABLE IF NOT EXISTS cities (
-            address_id INT AUTO_INCREMENT PRIMARY KEY,
-            city_name VARCHAR(50) NOT NULL,
-            country_code CHAR(2),
-            FOREIGN KEY (country_code) REFERENCES countries(code)
-        )";
-        $conn->exec($sql);
-        echo "Table 'cities' created successfully<br>";
-
         // Get valid country codes
         $validCountryCodes = [];
         $stmt = $conn->query("SELECT code FROM countries");
@@ -64,27 +54,81 @@ try {
             $validCountryCodes[] = $row['code'];
         }
 
+        // Create 'provinces' table
+        $sql = "CREATE TABLE IF NOT EXISTS provinces (
+            country_code CHAR(2),
+            admin1_code VARCHAR(20),
+            admin1_name VARCHAR(50) NOT NULL,
+            PRIMARY KEY (country_code, admin1_code),
+            FOREIGN KEY (country_code) REFERENCES countries(code)
+        )";
+        $conn->exec($sql);
+        echo "Table 'provinces' created successfully<br>";
+
+        // Insert provinces instances
+        $provincesFile = fopen(__DIR__ . '/../assets/data/admin1CodesASCII.txt', 'r');
+        if ($provincesFile) {
+            // Prepare an SQL statement for inserting data
+            $stmt = $conn->prepare("INSERT INTO provinces (country_code, admin1_code, admin1_name) VALUES (:country_code, :admin1_code, :admin1_name)");
+    
+            while (($line = fgetcsv($provincesFile, 0, "\t")) !== false) {
+                // Extract necessary fields
+                $arr = explode('.', $line[0]);
+
+                $countryCode = $arr[0];
+                $admin1Code = $arr[1];
+                $admin1Name = $line[2];
+
+                if (in_array($countryCode, $validCountryCodes)) {
+                    // Bind parameters and execute the statement
+                    $stmt->bindParam(':country_code', $countryCode);
+                    $stmt->bindParam(':admin1_code', $admin1Code);
+                    $stmt->bindParam(':admin1_name', $admin1Name);
+                    $stmt->execute();
+                }
+            }
+            fclose($provincesFile);
+            echo "provinces insertion success<br>";
+        }
+
+        // Create cities table
+        $sql = "CREATE TABLE IF NOT EXISTS cities (
+            address_id INT AUTO_INCREMENT PRIMARY KEY,
+            city_name VARCHAR(50) NOT NULL,
+            country_code CHAR(2),
+            admin1_code VARCHAR(20),
+            `population` BIGINT NOT NULL,
+            FOREIGN KEY (country_code) REFERENCES countries(code)
+        )";
+        $conn->exec($sql);
+        echo "Table 'cities' created successfully<br>";
+
         // Insert real world cities instances from GeoNames (The file contains cities with more than 15,000 people)
         $citiesFile = fopen(__DIR__ . '/../assets/data/cities15000.txt', 'r');
         if ($citiesFile) {
             // Prepare an SQL statement for inserting data
-            $stmt = $conn->prepare("INSERT INTO cities (city_name, country_code) VALUES (:city_name, :country_code)");
+            $stmt = $conn->prepare("INSERT INTO cities (city_name, country_code, admin1_code, `population`) VALUES (:city_name, :country_code, :admin1_code, :population)");
     
             while (($line = fgetcsv($citiesFile, 0, "\t")) !== false) {
                 // Extract necessary fields
                 $cityName = $line[2]; // name
                 $countryCode = $line[8]; // country code
-                
+                $admin1Code = $line[10]; // state or province code
+                $population = $line[14]; // population
+
                 // Check if the country code is valid
                 if (in_array($countryCode, $validCountryCodes)) {
                     // Bind parameters and execute the statement
                     $stmt->bindParam(':city_name', $cityName);
                     $stmt->bindParam(':country_code', $countryCode);
+                    $stmt->bindParam(':population', $population);
+                    $stmt->bindParam(':admin1_code', $admin1Code);
                     $stmt->execute();
                 }
             }
             fclose($citiesFile);
             echo "cities insertion success<br>";
+        }
 
         // Create Jobs table
         $sql = "CREATE TABLE IF NOT EXISTS jobs (
@@ -100,7 +144,6 @@ try {
         $conn->exec($sql);
         echo "Table 'jobs' created successfully<br>";
     }
-}
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

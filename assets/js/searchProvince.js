@@ -1,20 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const inputCountry = document.getElementById('search-country');
-    const inputProvince = document.getElementById('search-province');
-    const searchInput = document.getElementById('search-city');
-    const dropdown = document.getElementById('dropdown-city');
+    const searchInput = document.getElementById('search-province');
+    const dropdown = document.getElementById('dropdown-province');
     let dropdownSelected = false;
 
     searchInput.addEventListener('input', function() {
         const query = searchInput.value;
         const countryValue = inputCountry.value;
-        const provinceValue = inputProvince.value;
 
-        const test = document.getElementById("test");
-        test.value = `/job_platform/utils/search_location.php?country=${encodeURIComponent(countryValue)}&province=${encodeURIComponent(provinceValue)}&city=${encodeURIComponent(query)}`
-
-        if (query.length > 0 && countryValue !== '' && provinceValue !== '') {
-            fetch(`/job_platform/utils/search_location.php?country=${encodeURIComponent(countryValue)}&province=${encodeURIComponent(provinceValue)}&city=${encodeURIComponent(query)}`)
+        if (query.length > 0 && countryValue !== '') {
+            fetch(`/job_platform/utils/search_location.php?country=${encodeURIComponent(countryValue)}&province=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(data => {
                     dropdown.innerHTML = '';

@@ -49,7 +49,8 @@ You can see the status with `git status`.
 3. Push your branch to remote by `git push origin your-branch-name`
 
 
-## Columns in cities15000.txt
+## Columns 
+### cities15000.txt
 ```
 geonameid : integer id of record in geonames database
 name : name of geographical point (utf8) varchar(200)
@@ -73,3 +74,5 @@ modification date : date of last modification in yyyy-MM-dd format
 
 used columns: `asciiname` for `city_name`, `cc2` for `country_code`
 ```
+### admin1CodesACSII.txt
+Columns: code, name, name ascii, geonameid
