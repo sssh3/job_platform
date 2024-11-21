@@ -79,10 +79,10 @@ if ($_POST['action'] === 'Login') {
     }
 
     // Get user_type_id
-    $sql = "SELECT user_type_name FROM user_types WHERE user_type_name = '$usertype'";
+    $sql = "SELECT user_type_id FROM user_types WHERE user_type_name = '$usertype'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
-    $userTypeId = $row['user_type_name'];
+    $userTypeId = $row['user_type_id'];
     
     $sql = "INSERT INTO users (user_name, `password`, user_type_id) 
             VALUES ('$username', '$password', '$userTypeId')";

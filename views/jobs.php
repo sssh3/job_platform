@@ -23,7 +23,7 @@
 
     <div class="container">
         <div class="filter-options">
-            <h2>Filters</h2>
+            <h2 style="text-align: center;">Filters</h2>
             <!-- Add your filter options here -->
             
             <form class="filter-form">
@@ -40,10 +40,11 @@
                 <div id="dropdown-city"></div>
                 <script src="/job_platform/assets/js/searchCity.js"></script>
                 <br>
-                <p id="test"></p>
+                
 
                 <label for="job-type">Job Type:</label>
                 <select id="job-type" name="job-type">
+                    <option value="">select type</option>
                     <option value="full-time">Full-time</option>
                     <option value="part-time">Part-time</option>
                     <option value="contract">Contract</option>
@@ -56,29 +57,36 @@
                 <input type="text" id="search-title" name="search-title" placeholder="search in job titles" autocomplete="off"><br>
                 <input type="submit" value="Apply Filters"></input>
             </form>
+
+            <p id="matches"></p>
+            <p id="filters-sql-time"></p>
         </div>
 
         <ul id="jobList" class="job-list">
-            <li>
-                <div class="job-title">Software Engineer</div>
-                <div class="job-details">
-                    <p>Location: San Francisco, CA</p>
-                    <p>Description: Responsible for developing and maintaining web applications.</p>
-                    <a href="#" target="_blank">Apply Now</a>
-                </div>
-            </li>
+            <!-- example style-->
+            <!-- <div class="job-overview">
+                <h3 class="job-title">Software Engineer</h3>
+                <p class="job-overview-text">
+                FULLTIME<br>
+                <b>Tailored Environments Corporation</b><br>
+                <i>San Francisco, CA</i><br>
+                $50,000 -- $80,000
+                </p>
+            </div> -->
             <script src="/job_platform/assets/js/jobList.js"></script>
         </ul>
 
-        <div class="job-details">
-            <h2>Job Details</h2>
-            <!-- Add detailed description and buttons here -->
-            <div class="details">
+        <div id="jobDetails" class="job-details">
+            <h3 id="temp-details">Job Details</h3>
+            <!-- example style-->
+            <!-- <div class="details">
                 <h3>Software Engineer</h3>
                 <p>Full description of the job goes here...</p>
                 <button>Apply Now</button>
                 <button>Save for Later</button>
-            </div>
+            </div> -->
+            <script src="/job_platform/assets/js/jobDetails.js"></script>
+            <p id="test"></p>
         </div>
     </div>
 </body>

@@ -185,6 +185,8 @@ input[type="submit"]:disabled {
 .filter-options, .job-list, .job-details {
     padding: 20px;
     box-sizing: border-box;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
 }
 
 .filter-options {
@@ -198,10 +200,13 @@ input[type="submit"]:disabled {
 }
 
 .job-list {
+    padding: 5px;
     width: 30%;
     background-color: #e9e9e9;
     border-right: 1px solid #ccc;
     overflow-y: auto;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 .job-details {
@@ -216,6 +221,16 @@ input[type="submit"]:disabled {
 
 button {
     margin-right: 10px;
+    margin-top: 2px;
+    width: 30%;
+    padding: 3px;
+    background-color: rgb(12	91	171	);
+    color: white;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: rgb(9, 57, 106);
 }
 
 #dropdown-country, #dropdown-city, #dropdown-province {
@@ -236,3 +251,44 @@ button {
     background-color: #ddd;
 }
 
+.job-overview {
+    padding: 5px;
+    width: 95%;
+    background-color: #fff;
+    margin: 0px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.job-overview:hover {
+    filter: brightness(0.85);
+}
+
+.job-title {
+    margin-top: 5px; 
+    margin-bottom: 5px;
+}
+
+#job-type {
+    width: 80%; 
+    max-width: 300px; 
+    padding: 2px;
+    font-size: 12px; 
+    border: 1px solid #ccc;
+    border-radius: 4px; 
+    background-color: #ffffffb4; 
+    appearance: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover and Focus Effects */
+#job-type:hover {
+    background-color: #d8d8d8; 
+    outline: none; 
+}
+
+input[type="text"] {
+    font-size: 12px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}

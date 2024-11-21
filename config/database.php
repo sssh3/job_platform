@@ -205,10 +205,10 @@ try {
 
         // Insert job_type instances
         $sql = "INSERT INTO job_types (job_type_id, job_type_name) VALUES
-            (0, 'FULLTIME'),
-            (1, 'PARTTIME'),
-            (2, 'CONTRACT'),
-            (3, 'INTERNSHIP')
+            (0, 'Full-time'),
+            (1, 'Part-time'),
+            (2, 'Contract'),
+            (3, 'Internship')
         ";
         $conn->exec($sql);
         echo "job_types creation success<br>";
@@ -217,13 +217,14 @@ try {
         $sql = "CREATE TABLE IF NOT EXISTS jobs (
             job_id INT AUTO_INCREMENT PRIMARY KEY,
             job_title VARCHAR(255) NOT NULL,
-            job_type_id INT NOT NULL,
+            `description` VARCHAR(1023), 
             requirements VARCHAR(255),
             benefits VARCHAR(255),
             min_salary INT NOT NULL,
             max_salary INT NOT NULL,
             address_id INT,
             employer_id INT,
+            job_type_id INT,
             FOREIGN KEY (address_id) REFERENCES cities(address_id),
             FOREIGN KEY (job_type_id) REFERENCES job_types(job_type_id),
             FOREIGN KEY (employer_id) REFERENCES users(u_id)
@@ -318,10 +319,10 @@ try {
                 $jobTypeId = $jobTypeIds[array_rand($jobTypeIds)];
                 // requirements
                 $randomKeys = array_rand($jobRequirements, 2);
-                $requirements = '1. ' . $jobRequirements[$randomKeys[0]] . '\n2. ' . $jobRequirements[$randomKeys[1]];
+                $requirements = '1. ' . $jobRequirements[$randomKeys[0]] . '<br>2. ' . $jobRequirements[$randomKeys[1]];
                 // benefits
                 $randomKeys = array_rand($jobBenefits, 2);
-                $benefits = '1. ' . $jobBenefits[$randomKeys[0]] . '\n2. ' . $jobBenefits[$randomKeys[1]];
+                $benefits = '1. ' . $jobBenefits[$randomKeys[0]] . '<br>2. ' . $jobBenefits[$randomKeys[1]];
 
                 $minSalary = rand(10, 100) * 1000;
                 $maxSalary = $minSalary + rand(10, 100) *1000;
