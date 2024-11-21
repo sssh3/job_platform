@@ -29,32 +29,27 @@ $params = [
 ];
 
 // Initialize the SQL query with basic filtering
-$sql = "SELECT DISTINCT
-        job_id, job_title, min_salary, max_salary,
-        cities.city_name, 
-        provinces.admin1_name, 
-        countries.country_name, 
-        users.user_name,
-        job_types.job_type_name
-    FROM 
-        jobs
-    JOIN 
-        cities USING (address_id)
-    JOIN 
-        provinces USING (admin1_code, country_code)
-    JOIN 
-        (SELECT code AS country_code, `name` AS country_name FROM countries) countries USING (country_code)
-    JOIN 
-        (SELECT u_id AS employer_id, user_name FROM users JOIN user_types USING (user_type_id) WHERE user_type_name = 'employer') users USING (employer_id)
-    JOIN
-        job_types USING (job_type_id)
-    WHERE 1=1
+$sql = "SELECT
+            job_id, job_title, min_salary, max_salary,
+            cities.city_name, 
+            provinces.admin1_name, 
+            countries.name AS country_name, 
+            users.user_name,
+            job_types.job_type_name
+        FROM jobs
+        JOIN cities ON jobs.address_id = cities.address_id
+        JOIN provinces ON cities.admin1_code = provinces.admin1_code AND cities.country_code = provinces.country_code
+        JOIN countries ON provinces.country_code = countries.code
+        JOIN users ON jobs.employer_id = users.u_id
+        JOIN user_types ON users.user_type_id = user_types.user_type_id
+        JOIN job_types ON jobs.job_type_id = job_types.job_type_id
+        WHERE user_types.user_type_name = 'employer'
     ";
 
 // Add filtering conditions based on form inputs
 if ($params['search-country'] !== '') {
     $loc = $conn->real_escape_string($params['search-country']);
-    $sql .= " AND country_name = '$loc'";
+    $sql .= " AND countries.name = '$loc'";
 }
 
 if ($params['search-province'] !== '') {
