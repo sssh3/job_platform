@@ -9,4 +9,4 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 }
 
 // User is logged in, proceed with page content
-echo "Welcome, " . htmlspecialchars($_SESSION['username']) . "!";
+echo "Welcome, " . htmlspecialchars($_SESSION['user_name']) . "!";

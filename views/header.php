@@ -10,11 +10,7 @@
         </a>
         <ul>
             <li><a href="/job_platform/">Home</a></li>
-
-            <!-- TODO -->
             <li><a href="/job_platform/jobs">Browse Jobs</a></li>
-            <!-- TODO -->
-
             <li><a href="/job_platform/readme">Readme</a></li>
             <li><a href="/job_platform/contact">Contact</a></li>
         </ul>
@@ -26,7 +22,7 @@
                         if (isset($_SESSION["type"])) {echo htmlspecialchars($_SESSION['type']);};
                         echo "<br>";
                         if (($_SESSION["type"] == 'job-seeker') || ($_SESSION["type"] == 'employer')){
-                            echo htmlspecialchars($_SESSION["username"]);}
+                            echo htmlspecialchars($_SESSION["user_name"]);}
                     ?>
                 </p>
 

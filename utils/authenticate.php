@@ -44,8 +44,12 @@ if ($_POST['action'] === 'Login') {
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         // Successful login
-        $_SESSION['username'] = $username;
+        $_SESSION['user_name'] = $username;
         $_SESSION['logged_in'] = true;
+
+        // Store user_id
+        $user_id = $result->fetch_assoc()['u_id'];
+        $_SESSION['user_id'] = $user_id;
 
         // Store user_type_name in $_SESSION["type"]
         $result = $conn->query("SELECT user_type_name FROM user_types 
@@ -54,19 +58,24 @@ if ($_POST['action'] === 'Login') {
                                 ");
         $row = $result->fetch_assoc();
         $_SESSION["type"] = $row["user_type_name"];
-        $test_str = implode(",", $row);
-        echo "$test_str<br>";
 
         // Print time used on page
         $time_used = microtime(true) - $start_time;
-        $_SESSION["msg"] =  "SQL time used : " . round($time_used, 4) . "s";
+        $_SESSION["msg"] =  "Login SQL time used : " . round($time_used, 4) . "s";
 
-        header("Location: /job_platform/");
+        if (isset($_SESSION["chat_id"])) {
+            $chat_id = $_SESSION["chat_id"];
+            header("Location: /job_platform/communicate?user_id=$chat_id");
+        } else {
+            header("Location: /job_platform/");
+        }
+
     } else {
         // Invalid credentials
         // echo "Invalid username or password.";
         $_SESSION["msg"] = "Invalid username or password.";
-        header("Location: /job_platform/login");
+        $currentUrl = $_SERVER['PHP_SELF'];
+        header("Location: $currentUrl");
     }
 } elseif ($_POST['action'] === 'Register') {
     // Check if the user name already exsists
@@ -74,7 +83,8 @@ if ($_POST['action'] === 'Login') {
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $_SESSION["msg"] = "User name not available.";
-        header("Location: /job_platform/login");
+        $currentUrl = $_SERVER['PHP_SELF'];
+        header("Location: $currentUrl");
         exit;
     }
 
@@ -90,8 +100,9 @@ if ($_POST['action'] === 'Login') {
     $_SESSION["msg"] = "Register success by name \"$username\" as a $usertype.";
     // Print time used on page
     $time_used = microtime(true) - $start_time;
-    $_SESSION["msg"] =  $_SESSION["msg"] . "<br>SQL time used : " . round($time_used, 4) . "s";
-    header("Location: /job_platform/login");
+    $_SESSION["msg"] =  $_SESSION["msg"] . "<br>Register SQL time used : " . round($time_used, 4) . "s";
+    $currentUrl = $_SERVER['PHP_SELF'];
+    header("Location: $currentUrl");
 }
 
 

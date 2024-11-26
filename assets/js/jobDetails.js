@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 <b>Benefits:</b><br>
                 ${details.benefits}<br><br>
                 </p>
-                <button>Contact Employer</button>
+                <button onclick="window.location.href='/job_platform/communicate?chat_id=${details.employer_id}'">Contact Employer</button>
                 <p>SQL time used for details: ${details.sqlTime}s</p>
             `;
         jobDetails.appendChild(detailContainer);

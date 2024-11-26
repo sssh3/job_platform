@@ -1,5 +1,3 @@
-<?php session_start(); ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +24,8 @@
         $msg = $_SESSION["msg"];
         UNSET($_SESSION["msg"]);
         echo "<p> $msg </p>";
-    } ?>
+    } 
+    ?>
     <div class="center-container">
         <form action="/job_platform/utils/authenticate.php" method="post">
             <label for="username">User name:</label>

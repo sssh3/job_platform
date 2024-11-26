@@ -344,6 +344,20 @@ try {
         echo "jobs generation success<br>";
 
 
+        // Create message table
+        $sql = "CREATE TABLE messages (
+            msg_id INT AUTO_INCREMENT PRIMARY KEY,
+            sender_id INT,
+            receiver_id INT,
+            message TEXT NOT NULL,
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (sender_id) REFERENCES users(u_id),
+            FOREIGN KEY (receiver_id) REFERENCES users(u_id)
+        );";
+        $conn->exec($sql);
+        echo "messages table created<br>";
+
+
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
