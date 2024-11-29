@@ -35,7 +35,7 @@ if ($path !== '/job_platform/login') {
                         }
                 ?>
                 </span>
-                <span class="login-menu-item"> | <a id="user-link" href="/job_platform/">Profile</a> | </span>
+                <span class="login-menu-item"> | <a id="user-link" href="/job_platform/views/<?php echo ($_SESSION['type'] == 'employer') ? 'company_profile.php' : 'jobseeker_profile.php'; ?>">Profile</a> | </span>
                 <span class="login-menu-item"><a id="user-link" href="/job_platform/">Control Panel</a> | </span>
                 <span class="login-menu-item"><a id="user-link" href="/job_platform/utils/logout.php">Logout</a> | </span>
             </li>
