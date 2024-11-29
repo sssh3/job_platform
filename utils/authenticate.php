@@ -63,9 +63,9 @@ if ($_POST['action'] === 'Login') {
         $time_used = microtime(true) - $start_time;
         $_SESSION["msg"] =  "Login SQL time used : " . round($time_used, 4) . "s";
 
-        if (isset($_SESSION["chat_id"])) {
-            $chat_id = $_SESSION["chat_id"];
-            header("Location: /job_platform/communicate?user_id=$chat_id");
+        if (isset($_SESSION['last_visited_url'])) {
+            $last_url = $_SESSION['last_visited_url'];
+            header("Location: $last_url");
         } else {
             header("Location: /job_platform/");
         }

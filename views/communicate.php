@@ -12,9 +12,6 @@
     <?php
     if (!isset($_SESSION['user_id'])) {
         $_SESSION['msg'] = "Please log in before sending a message.";
-        if (isset($_GET["chat_id"])) {
-            $_SESSION["chat_id"] = $_GET["chat_id"]; // Store chatting subject id
-        }
         header("Location: /job_platform/login");
         exit();
     } else {
