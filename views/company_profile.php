@@ -6,8 +6,8 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$companyId = $_SESSION['user_id']; // 获取公司 ID
-// 连接数据库并获取公司信息
+$companyId = $_SESSION['user_id']; // company ID
+// connection
 $host = 'localhost';
 $db = 'job_platform_db';  
 $user = 'root'; 
@@ -17,7 +17,7 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 获取公司数据
+    // company data
     $stmt = $pdo->prepare("SELECT * FROM companies WHERE u_id = :companyId");
     $stmt->execute(['companyId' => $companyId]);
     $company = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -90,14 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="/job_platform/assets/css/company_styles.css"> <!-- Link to your CSS file -->
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="homepage.php">Home</a></li>
-                
-            </ul>
-        </nav>
-    </header>
+    
+<?php include 'header.php'; ?>
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
 
     <div class="profile-container">
         <!-- Company Profile Header -->
@@ -165,5 +164,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <p>&copy; <?php echo date('Y'); ?> <?php echo $company_exists ? $company_name : 'Your Company'; ?>. All rights reserved.</p>
         </footer>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

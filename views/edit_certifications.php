@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 如果没有登录，跳转到登录页面
+// Redirect to login page if not logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -17,13 +17,13 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 查询现有的认证信息
+    // Query existing certifications
     $stmt = $pdo->prepare("SELECT * FROM certifications WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
     $stmt->execute();
     $certifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 更新认证信息
+    // Update certification information
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_certification'])) {
         $certification_id = $_POST['certification_id'];
         $certification_name = $_POST['certification_name'];
@@ -42,7 +42,7 @@ try {
         exit;
     }
 
-    // 新增认证信息
+    // Add new certification information
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_certification'])) {
         $certification_name = $_POST['certification_name'];
         $certification_date = $_POST['certification_date'];
@@ -59,7 +59,7 @@ try {
         exit;
     }
 
-    // 删除认证信息
+    // Delete certification information
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_certification'])) {
         $certification_id = $_POST['certification_id'];
 
@@ -82,84 +82,105 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/job_platform/assets/css/jobseekerStyle.css">
     <title>Edit Certifications</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px 0;
-        }
-        label {
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        input[type="text"], input[type="date"] {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        .activity-form {
-            margin-bottom: 20px;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-        .btn-back {
-            margin-top: 20px;
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-back:hover {
-            background-color: #c0392b;
-        }
-        hr {
-            border: 1px solid #ddd;
-            margin: 20px 0;
-        }
+       
+    h2 {
+    text-align: center;
+    color: #2c3e50;
+    }
+
+    form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    width: 80%; /* Set width to 80% */
+    max-width: 600px; /* Limit maximum width */
+    }
+
+    label {
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+    }
+
+    input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    }
+
+    button {
+    background-color: #3498db;  /* Set button color to blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    }
+
+    button:hover {
+    background-color: #2980b9;
+    }
+
+    .activity-form {
+    margin-bottom: 20px;
+    }
+
+    .container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content */
+    justify-content: flex-start; /* Align content to the top */
+    position: relative; /* Position child elements relative to this container */
+    }
+
+    .btn-back {
+    position: absolute; /* Use absolute positioning */
+    top: 20px; /* 20px from the top */
+    left: 20px; /* 20px from the left */
+    padding: 10px 20px;
+    background-color: #3498db;  /* Set button color to blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from link */
+    }
+
+    .btn-back:hover {
+    background-color: #2980b9;
+    }
+
+    hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    }
     </style>
 </head>
 <body>
+<?php include 'header.php'; ?>
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
 
 <div class="container">
     <h2>Edit Certifications</h2>
 
-    <!-- 返回按钮 -->
+    <!-- Back button -->
     <a href="jobseeker_profile.php" class="btn-back">Back to Profile</a>
 
-    <!-- 新增认证信息表单 -->
+    <!-- Add new certification form -->
     <form method="POST" action="edit_certifications.php" class="activity-form">
         <h3>Add New Certification</h3>
         <label for="certification_name">Certification Name:</label>
@@ -175,7 +196,7 @@ try {
     </form>
 
     <h3>Your Certifications</h3>
-    <!-- 显示现有认证信息，允许编辑和删除 -->
+    <!-- Display existing certifications, allowing editing and deletion -->
     <?php foreach ($certifications as $certification): ?>
         <form method="POST" action="edit_certifications.php" class="activity-form">
             <input type="hidden" name="certification_id" value="<?php echo $certification['certification_id']; ?>">
@@ -195,6 +216,6 @@ try {
         <hr>
     <?php endforeach; ?>
 </div>
-
+<?php include 'footer.php'; ?>
 </body>
 </html>

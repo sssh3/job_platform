@@ -18,8 +18,8 @@ if ($path !== '/job_platform/login') {
     <nav>
         <!-- Logo wrapped in a link to the homepage -->
         <a href="/job_platform/">
-            <img src="assets\images\logo.png" alt="Logo" width="80" height="74">
-            <img src="assets\images\logo1.png" alt="Logo" width="130" height="74">
+            <img src="/job_platform/assets\images\logo.png" alt="Logo" width="80" height="74">
+            <img src="/job_platform/assets\images\logo1.png" alt="Logo" width="130" height="74">
 
         </a>
 

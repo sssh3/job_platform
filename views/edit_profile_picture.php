@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 如果没有登录，跳转到登录页面
+// If the user is not logged in, redirect to the login page
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -17,24 +17,24 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 获取当前的用户头像 BLOB 数据
+    // Get the current user's avatar BLOB data
     $stmt = $pdo->prepare("SELECT avatar FROM jobseekers WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
     $stmt->execute();
     $jobseeker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // 上传头像
+    // Upload avatar
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['avatar'])) {
         $avatar = $_FILES['avatar'];
 
-        // 检查文件上传是否成功
+        // Check if the file upload was successful
         if ($avatar['error'] !== UPLOAD_ERR_OK) {
             echo "<script>alert('File upload error: " . $avatar['error'] . "');</script>";
         } else {
-            // 读取文件内容为二进制数据
+            // Read the file content as binary data
             $avatar_data = file_get_contents($avatar['tmp_name']);
 
-            // 更新数据库中的 avatar 字段
+            // Update the avatar field in the database
             $stmt_update = $pdo->prepare("UPDATE jobseekers SET avatar = :avatar WHERE u_id = :u_id");
             $stmt_update->bindParam(':avatar', $avatar_data, PDO::PARAM_LOB);
             $stmt_update->bindParam(':u_id', $u_id);
@@ -44,9 +44,9 @@ try {
         }
     }
 
-    // 删除头像
+    // Delete avatar
     if (isset($_POST['delete_avatar']) && $jobseeker && $jobseeker['avatar']) {
-        // 更新数据库中的 avatar 字段为空
+        // Update the avatar field in the database to NULL
         $stmt_delete = $pdo->prepare("UPDATE jobseekers SET avatar = NULL WHERE u_id = :u_id");
         $stmt_delete->bindParam(':u_id', $u_id);
         $stmt_delete->execute();
@@ -64,33 +64,56 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/job_platform/assets/css/jobseekerStyle.css">
     <title>Edit Profile Picture</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 20px;
+        /* container style */
+        .container {
+            width: 80%;
+            margin: 20px auto; /* Center align */
+            text-align: center; /* Center align content */
+            flex-grow: 1; /* Make container take up remaining space */
+            position: relative; /* For positioning the back button in the top-left corner */
+            display: flex;
+            flex-direction: column; /* Arrange content vertically */
+            align-items: center; /* Center align horizontally */
         }
+
+        /* Title style */
         h2 {
-            text-align: center;
             color: #2c3e50;
         }
+
+        /* Form style */
         form {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin: 10px 0;
+            text-align: center; /* Center align form content */
+            display: flex; /* Make form a flex container */
+            flex-direction: column; /* Arrange form content vertically */
+            justify-content: center; /* Center align content vertically */
+            align-items: center; /* Center align content horizontally */
         }
+
+        /* Label style */
         label {
             font-weight: bold;
-            display: inline-block;
             margin-top: 10px;
+            text-align: center; /* Center align label */
         }
+
+        /* File input style */
         input[type="file"] {
             margin-top: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
+
+        /* Button style */
         button {
             background-color: #3498db;
             color: white;
@@ -100,32 +123,40 @@ try {
             cursor: pointer;
             margin-top: 15px;
         }
+
         button:hover {
             background-color: #2980b9;
         }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
+
+        /* Back button style */
         .btn-back {
             margin-top: 20px;
             display: inline-block;
             padding: 10px 20px;
-            background-color: #e74c3c;
+            background-color: #3498db; /* Uniform color */
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            text-decoration: none; /* Remove underline from link */
+            position: absolute;
+            top: 20px;
+            left: 20px;
         }
+
         .btn-back:hover {
-            background-color: #c0392b;
+            background-color: #2980b9;
         }
+
+        /* Avatar display style */
         .profile-img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
         }
+
+        /* Delete button style */
         .btn-delete {
             margin-top: 20px;
             display: inline-block;
@@ -136,20 +167,27 @@ try {
             border-radius: 4px;
             cursor: pointer;
         }
+
         .btn-delete:hover {
             background-color: #c0392b;
         }
     </style>
 </head>
 <body>
+<?php include 'header.php'; ?>
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
 
 <div class="container">
     <h2>Edit Profile Picture</h2>
 
-    <!-- 返回按钮 -->
+    <!-- Back button -->
     <a href="jobseeker_profile.php" class="btn-back">Back to Profile</a>
 
-    <!-- 上传头像表单 -->
+    <!-- Upload avatar form -->
     <form method="POST" enctype="multipart/form-data" action="edit_profile_picture.php">
         <label for="avatar">Upload Your Avatar:</label>
         <input type="file" name="avatar" required><br>
@@ -159,15 +197,15 @@ try {
 
     <?php if ($jobseeker['avatar']): ?>
         <h3>Current Avatar:</h3>
-        <!-- 提供下载并查看当前头像 -->
+        <!-- Display and allow downloading of current avatar -->
         <img src="data:image/jpeg;base64,<?php echo base64_encode($jobseeker['avatar']); ?>" alt="Current Avatar" class="profile-img">
         
-        <!-- 删除头像按钮 -->
+        <!-- Delete avatar button -->
         <form method="POST" action="edit_profile_picture.php">
             <button type="submit" name="delete_avatar" class="btn-delete">Delete Avatar</button>
         </form>
     <?php endif; ?>
 </div>
-
+<?php include 'footer.php'; ?>
 </body>
 </html>

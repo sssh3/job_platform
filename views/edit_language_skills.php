@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// 如果没有登录，跳转到登录页面
+// If the user is not logged in, redirect to the login page
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
@@ -17,13 +17,13 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 查询现有的语言技能
+    // Fetch existing language skills
     $stmt = $pdo->prepare("SELECT * FROM language_skills WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
     $stmt->execute();
     $languages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 更新语言技能
+    // Update language skill
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['edit_language'])) {
         $language_skill_id = $_POST['language_skill_id'];
         $language_name = $_POST['language_name'];
@@ -40,7 +40,7 @@ try {
         exit;
     }
 
-    // 新增语言技能
+    // Add new language skill
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_language'])) {
         $language_name = $_POST['language_name'];
         $proficiency_level = $_POST['proficiency_level'];
@@ -55,7 +55,7 @@ try {
         exit;
     }
 
-    // 删除语言技能
+    // Delete language skill
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete_language'])) {
         $language_skill_id = $_POST['language_skill_id'];
 
@@ -78,84 +78,107 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/job_platform/assets/css/jobseekerStyle.css">
+    
     <title>Edit Language Skills</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 20px;
-        }
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px 0;
-        }
-        label {
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        .activity-form {
-            margin-bottom: 20px;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-        .btn-back {
-            margin-top: 20px;
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-back:hover {
-            background-color: #c0392b;
-        }
-        hr {
-            border: 1px solid #ddd;
-            margin: 20px 0;
-        }
-    </style>
+ 
 </head>
+<style>
+    h2 {
+    text-align: center;
+    color: #2c3e50;
+    }
+
+    form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    width: 80%; /* Set the width to 80% */
+    max-width: 600px; /* Limit the maximum width */
+    }
+
+    label {
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 10px;
+    }
+
+    input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    }
+
+    button {
+    background-color: #3498db;  /* Uniform button color as blue */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    }
+
+    button:hover {
+    background-color: #2980b9;
+    }
+
+    .activity-form {
+    margin-bottom: 20px;
+    }
+
+    .container {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content */
+    justify-content: flex-start; /* Align content to the top */
+    position: relative; /* So that absolute positioned elements are relative to it */
+    }
+
+    .btn-back {
+    position: absolute; /* Use absolute positioning */
+    top: 20px; /* 20px from the top */
+    left: 20px; /* 20px from the left */
+    padding: 10px 20px;
+    background-color: #3498db;  /* Uniform button color as blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from link */
+    }
+
+    .btn-back:hover {
+    background-color: #2980b9;
+    }
+
+    hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    }
+</style>
+
 <body>
+<?php include 'header.php'; ?>
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
 
 <div class="container">
     <h2>Edit Language Skills</h2>
 
-    <!-- 返回按钮 -->
+    <!-- Back button -->
     <a href="jobseeker_profile.php" class="btn-back">Back to Profile</a>
 
-    <!-- 新增语言技能表单 -->
+    <!-- Add new language skill form -->
     <form method="POST" action="edit_language_skills.php" class="activity-form">
         <h3>Add New Language Skill</h3>
         <label for="language_name">Language Name:</label>
@@ -173,7 +196,7 @@ try {
     </form>
 
     <h3>Your Language Skills</h3>
-    <!-- 显示现有语言技能，允许编辑和删除 -->
+    <!-- Display existing language skills, with options to edit or delete -->
     <?php foreach ($languages as $language): ?>
         <form method="POST" action="edit_language_skills.php" class="activity-form">
             <input type="hidden" name="language_skill_id" value="<?php echo $language['language_skill_id']; ?>">
@@ -194,6 +217,6 @@ try {
         <hr>
     <?php endforeach; ?>
 </div>
-
+<?php include 'footer.php'; ?>
 </body>
 </html>

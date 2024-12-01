@@ -1,0 +1,451 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#markdown-content {
+    margin: 0px 20px;
+}
+
+.horizontal-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.horizontal-menu li {
+    margin: 0 10px;
+}
+
+.horizontal-menu li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.horizontal-menu li a:hover {
+    background-color: #0a5a8968;
+}
+
+.login-menu-item {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    left: 20;
+}
+
+.login-menu-item li {
+    margin: 0 1px;
+}
+
+.login-menu-item li a {
+    color: rgb(12, 10, 10);
+    text-decoration: none;
+    padding: 10px 20px;
+}
+
+.login-menu-item li a:hover {
+    background-color: #0a5a8968;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+nav {
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    justify-content: center;
+    background-color: #0a5a8968;
+}
+
+.logo img {
+    height: 50px; /* Adjust logo size */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    margin: 0 15px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+}
+
+main {
+    flex: 1;
+    padding: 20px;
+}
+
+footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    color: #666;
+}
+
+footer ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+footer ul li {
+    margin: 0 10px;
+}
+
+footer ul a {
+    text-decoration: none;
+    color: #333;
+}
+
+footer ul a:hover {
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-links li {
+        margin: 5px 0;
+    }
+
+    footer ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer ul li {
+        margin: 5px 0;
+    }
+}
+
+form {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+input[type="text"] {
+    width: 95%;
+}
+
+.responsive-input {
+    width: 95%; /* Use a percentage to make it responsive */
+    max-width: 400px; /* Set a maximum width */
+    height: 20px;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+input[type="submit"] {
+    margin-top: 10px;
+    width: 30%;
+    padding: 3px;
+    background-color: rgb(12, 91, 171);
+    color: white;
+    border-radius: 4px;
+}
+
+input[type="button"] {
+    margin-top: 2px;
+    width: 30%;
+    padding: 3px;
+    background-color: rgb(12, 91, 171);
+    color: white;
+    border-radius: 4px;
+}
+
+input[type="submit"]:disabled {
+    background-color: #ccc;
+    color: #666;
+}
+
+/* Hover and Focus Effects */
+#job-type:hover {
+    background-color: #d8d8d8;
+    outline: none;
+}
+
+input[type="text"] {
+    font-size: 12px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #0a5a899b;
+    color: white;
+    padding: 15px;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+nav a:hover {
+    background-color: #575757;
+    border-radius: 5px;
+}
+
+.section {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+footer {
+    text-align: center;
+    color: white;
+    padding: 15px 0;
+}
+
+li span {
+    color: rgb(184, 232, 87);
+}
+
+#user-link {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0s ease;
+}
+
+#user-link:hover {
+    color: rgb(55, 88, 95);
+}
+
+/* Profile container */
+.profile-container {
+    width: 100%;
+    max-width: 1200px;  /* 限制最大宽度 */
+    margin: 50px auto;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Header */
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h1 {
+    font-size: 36px;
+    color: #333;
+}
+
+.profile-header .industry {
+    font-size: 18px;
+    color: #666;
+}
+
+.profile-header .location {
+    font-size: 16px;
+    color: #999;
+    margin-top: 10px;
+}
+
+/* Profile Section */
+.profile-section {
+    margin-bottom: 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 800px;  /* 限制最大宽度 */
+    margin-left: auto;  /* 居中对齐 */
+    margin-right: auto; /* 居中对齐 */
+    box-sizing: border-box;  /* 包括内边距 */
+}
+
+.profile-section h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.profile-section p,
+.profile-section ul {
+    font-size: 16px;
+    color: #666;
+}
+
+.profile-section ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.profile-section ul li {
+    margin-bottom: 10px;
+}
+
+.profile-section a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.profile-section a:hover {
+    text-decoration: underline;
+}
+
+/* Edit Profile */
+.edit-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 800px;  /* 限制最大宽度 */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: auto;  /* 居中对齐 */
+    margin-right: auto; /* 居中对齐 */
+}
+
+/* Form */
+form {
+    width: 100%;
+    max-width: 600px;  /* 限制最大宽度 */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+form input[type="submit"] {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.edit-profile button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-profile button:hover {
+    background-color: #555;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-size: 14px;
+    color: #777;
+    margin-top: 30px;
+    padding: 20px 0;
+}
