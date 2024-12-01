@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* height: 100vh; */
     margin: 3px;
 }
 
@@ -69,4 +69,11 @@ button {
 
 button:hover {
     background-color: #45a049;
+}
+
+#chat-body .job-details{
+    align-self: start;
+    border-radius: 5px;
+    margin: 10px;
+    margin-left: 25px;
 }

@@ -10,18 +10,18 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             
             if (targetElement && targetElement.classList.contains('job-overview')) {
-                fetchDetails(targetElement);
+                id = targetElement.id;
+                fetchDetails(id);
             }
         });
     }
 
     // Define the function to fetch job details
-    function fetchDetails(element) {
-        let id = element.id;
+    function fetchDetails(jobId) {
         // const test_str = document.getElementById("test");
         // test_str.textContent = `/job_platform/utils/job_details.php?id=${id}`;
         // Fetch job data from the server with query parameters
-        fetch(`/job_platform/utils/job_details.php?id=${id}`)
+        fetch(`/job_platform/utils/job_details.php?id=${jobId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -65,11 +65,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 <b>Benefits:</b><br>
                 ${details.benefits}<br><br>
                 </p>
-                <button onclick="window.location.href='/job_platform/communicate?chat_id=${details.employer_id}'">Contact Employer</button>
+                <button onclick="window.location.href='/job_platform/communicate?chat_id=${details.employerId}&job_id=${details.jobId}'">Contact Employer</button>
                 <p>SQL time used for details: ${details.sqlTime}s</p>
             `;
         jobDetails.appendChild(detailContainer);
 
+    }
+
+    // For job details in communicate.php
+    var params = new URLSearchParams(window.location.search);
+    var jobId = params.get('job_id');
+
+    if (jobId) {
+        fetchDetails("job-" + jobId)
     }
 
 });

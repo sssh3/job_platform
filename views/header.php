@@ -42,19 +42,19 @@ if ($path !== '/job_platform/login') {
                         };
                         echo " ";  
                         if (($_SESSION["type"] == 'job-seeker') || ($_SESSION["type"] == 'employer')){
-                            echo htmlspecialchars($_SESSION["username"]);
+                            echo htmlspecialchars($_SESSION["user_name"]);
                         }
                 ?>
                 </span>
                 <span style="display: inline;"> | <a id="user-link" href="/job_platform/views/<?php echo ($_SESSION['type'] == 'employer') ? 'company_profile.php' : 'jobseeker_profile.php'; ?>">Profile</a> | </span>
-                <span style="display: inline;"><a id="user-link" href="/job_platform/">Control Panel</a> | </span>
+                <span style="display: inline;"><a id="user-link" href="/job_platform/views/<?php echo ($_SESSION['type'] == 'employer') ? 'control_employer.php' : 'control_jobseeker.php'; ?>">Control Panel</a> | </span>
                 <span style="display: inline;"><a id="user-link" href="/job_platform/utils/logout.php">Logout</a> | </span>
             </li>
             
             <?php else:?>
             <li style="margin: 10px; display: inline-block;">
                 <span style="display: inline;font-family: 'Times New Roman', serif;font-size: 20px;">
-                    You are not logged in. Please log in. 
+                    You are not logged in. 
                      | <a id="user-link" href="/job_platform/login">Login/Register</a> | 
                 </span>        
             </li>

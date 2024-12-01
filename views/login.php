@@ -34,16 +34,18 @@
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" class="responsive-input" required>
             <br>
-            <input type="submit" name="action" value="Login">
+            <input type="submit" name="action" value="Login"><br>
+            <input type="submit" name="action" id="register" value="Register" disabled>
             <select name="usertype" id="usertype" onchange="allowRegister()">
-                <option value="">select type for register</option>
+                <option value="">select user type before registration</option>
                 <option value="job-seeker">job-seeker</option>
                 <option value="employer">employer</option>
             </select>
-            <input type="submit" name="action" id="register" value="Register" disabled>
+            <br>
             <br>
             <label for="button">OR:</label>
             <input type="button" value="Login as a visitor" onclick="window.location.href='utils/authenticate.php';">
+            <p style="font-size: 12px; margin-top: 5px; margin-bottom: 0px;">Note: A visitor cannot send messages or create applications/job-positions</p>
         </form>
     </div>
     <?php include 'footer.php'; ?>

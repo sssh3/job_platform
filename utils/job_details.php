@@ -70,7 +70,7 @@ if ($count > 0) {
             'title' => $row['job_title'],
             'jobType' => $row['job_type_name'],
             'employer' => $row['user_name'],
-            'employer_id' => $row['employer_id'],
+            'employerId' => $row['employer_id'],
             'location' => $location,
             'minSalary' => $row['min_salary'],
             'maxSalary' => $row['max_salary'],

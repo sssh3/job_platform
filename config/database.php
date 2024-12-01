@@ -18,6 +18,7 @@ try {
         // echo "Database 'job_platform_db' already exists. Exiting script.<br>";
     }
     else {
+        echo "Please read the User Guide in README.md for initialization problems<br><br>";
 
         // SQL to create the database
         $sql = "CREATE DATABASE IF NOT EXISTS job_platform_db";

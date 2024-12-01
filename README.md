@@ -1,18 +1,28 @@
 # DMS Project - Job-seeking Platform
 
+## User Guide
+
+The entire project folder should be put directly in the `htdocs` folder. For example, `xamppfiles/htdocs/job_platform`   
+
+When the server runs `index.php` the first time, `config/database.php` will try to create schema `job_platform_db` if it does not exists and then insert more than 100,000 simulated rows. It may takes a few seconds. For old computers, it could exceed 120s and throw timeout error. You may alter the amount of simulated job instances by changing this line `$totalJobs = 90000;` in `config/database.php`. Or delete lines in `data/cities15000.txt`.  
+
+Simulated job instances are distributed into each city based on its population porpotion.  
+
+Some features are still under developing.
 
 ## Project Structure
 ```
-index.php: Entry point for the application.
-.htaccess: For URL rewriting and other Apache configurations.
-/assets: Contains static files like CSS, JavaScript, and images.
-    /css: Stylesheets.
-    /js: JavaScript files.
-    /images: Images.
-/views: HTML templates and views.
-/config: Configuration files for database connection, settings, etc.
-    database.php
-    config.php
+index.php: Entry point for the application
+.htaccess: For URL rewriting and other Apache configurations
+/assets: Contains static files like CSS, JavaScript, and images
+    /css: Stylesheets
+    /js: JavaScript files
+    /images: Images
+    /data: Data for SQL database
+    /text: Short text files for random advice on the footer
+/views: Webpages
+/config: Configuration files for database connection, settings, etc
+/uploads: Stores uploaded files, note that avatars are stored in SQL database
 ```
 
 ## Version Control Instruction
@@ -25,7 +35,7 @@ git config --global user.email "your.email@example.com"
 
 ### Project Clone
 ```
-git clone https://github.com/sssh3/dms_job_platform
+git clone https://github.com/sssh3/job_platform
 ```
 
 ### Make Your Own Change
@@ -50,6 +60,8 @@ You can see the status with `git status`.
 
 
 ## Columns 
+Records of data columns obtained from geonames.org.  
+
 ### cities15000.txt
 ```
 geonameid : integer id of record in geonames database
@@ -72,7 +84,11 @@ dem : digital elevation model, srtm3 or gtopo30, average elevation of 3''x3'' (c
 timezone : the iana timezone id (see file timeZone.txt) varchar(40)
 modification date : date of last modification in yyyy-MM-dd format
 
-used columns: `asciiname` for `city_name`, `cc2` for `country_code`
+used columns: 
+`asciiname` for `city_name`, 
+`cc2` for `country_code`, 
+`admin1 code` for `admin1_code`, 
+`population`
 ```
 ### admin1CodesACSII.txt
 Columns: code, name, name ascii, geonameid

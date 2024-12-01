@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Create a URLSearchParams object from the query string
         var params = new URLSearchParams(window.location.search);
         // Get the value of the 'user_id' parameter
-        var receiverId = params.get('user_id');
+        var receiverId = params.get('chat_id');
 
         const message = messageInput.value.trim();
         if (message === '') return;
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a URLSearchParams object from the query string
             var params = new URLSearchParams(window.location.search);
             // Get the value of the 'user_id' parameter
-            var receiverId = params.get('user_id');
+            var receiverId = params.get('chat_id');
 
             const response = await fetch(`/job_platform/utils/fetch_message.php?receiver_id=${encodeURIComponent(receiverId)}`, {
                 method: 'GET',

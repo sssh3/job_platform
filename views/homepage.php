@@ -36,13 +36,13 @@ if ($path !== '/job_platform/login') {
                 ?>
                 </span>
                 <span class="login-menu-item"> | <a id="user-link" href="/job_platform/views/<?php echo ($_SESSION['type'] == 'employer') ? 'company_profile.php' : 'jobseeker_profile.php'; ?>">Profile</a> | </span>
-                <span class="login-menu-item"><a id="user-link" href="/job_platform/">Control Panel</a> | </span>
+                <span class="login-menu-item"><a id="user-link" href="/job_platform/views/<?php echo ($_SESSION['type'] == 'employer') ? 'control_employer.php' : 'control_jobseeker.php'; ?>">Control Panel</a> | </span>
                 <span class="login-menu-item"><a id="user-link" href="/job_platform/utils/logout.php">Logout</a> | </span>
             </li>
             <?php else:?>
             <h1>Welcome to UIC Jobseeking Platform</h1>
             <li class="login-reminder" style="margin: 10px; display: inline-block; font-family: Times New Roman;">
-            <span style="margin-right: 10px;font-family: Times New Roman;">You are not logged in. Please log in.</span>
+            <span style="margin-right: 10px;font-family: Times New Roman;">You are not logged in.</span>
             <span class="login-menu-item" style="font-family: Times New Roman;">
                  | <a id="user-link" href="/job_platform/login">Login/Register</a> | 
             </span>
