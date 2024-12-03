@@ -52,7 +52,7 @@ try {
         )";
         $conn->exec($sql);
         echo "Table 'companies' created successfully<br>";
-
+        
         // 插入 companies 数据
         $sql = "INSERT INTO companies (u_id, company_name, industry, location, company_size, website, social_media, company_description)
         VALUES
@@ -69,18 +69,20 @@ try {
             short_intro TEXT,
             phone VARCHAR(20),
             email VARCHAR(255) NOT NULL,
+            GPA DECIMAL(3, 2) DEFAULT NULL CHECK (GPA < 4),  -- GPA 必须小于 4
             first_name VARCHAR(100) NOT NULL,
             family_name VARCHAR(100) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE
         )";
+
         $conn->exec($sql);
         echo "Table 'jobseekers' created successfully<br>";
 
         // 插入 jobseekers 数据
-        $sql = "INSERT INTO jobseekers (u_id, avatar, resume, short_intro, phone, email, first_name, family_name)
+        $sql = "INSERT INTO jobseekers (u_id, avatar, resume, short_intro, phone, email, GPA,first_name, family_name)
         VALUES
-            (2, 'avatar.jpg', 'resume.pdf', 'A passionate software engineer.', '123-456-7890', 'john.doe@example.com', 'John', 'Doe')
+            (2, 'avatar.jpg', 'resume.pdf', 'A passionate software engineer.', '123-456-7890', 'john.doe@example.com', '3.50','John', 'Doe')
         ";
         $conn->exec($sql);
         echo "Inserted jobseekers data successfully<br>";
@@ -170,6 +172,19 @@ try {
         $conn->exec($sql);
         echo "Inserted extracurricular_activities data successfully<br>";
 
+        // applications table:
+        $sql = "CREATE TABLE applications (
+            application_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,  -- 外键，指向用户（求职者）
+            job_id INT NOT NULL,   -- 外键，指向职位表
+            resume_url VARCHAR(255),   -- 求职者简历的 URL（改为存储 URL）
+            status ENUM('applied', 'resume_viewed', 'interview', 'offer', 'rejected'),
+            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(u_id) ON DELETE CASCADE,
+            FOREIGN KEY (job_id) REFERENCES jobs(job_id) ON DELETE CASCADE
+        ) ";
+        $conn->exec($sql);
+        echo "Table 'Applications' created successfully<br>";
     }
 
 } catch (PDOException $e) {

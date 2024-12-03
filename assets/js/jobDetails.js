@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById('jobList');
-
+    
+    
     if (container) {
         container.addEventListener('click', function(event) {
             // Traverse the event path to find the element with the class 'job-overview'
@@ -10,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             
             if (targetElement && targetElement.classList.contains('job-overview')) {
-                id = targetElement.id;
+                const id = targetElement.id; // 声明 id 变量
                 fetchDetails(id);
             }
         });
@@ -29,20 +30,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 return response.json(); // Parse the JSON from the response
             })
             .then(data => {
-                showJobDetails(data); // Call function to populate the job list
-
-                
+                showJobDetails(data); // Call function to populate the job details
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
     }
 
-    // Define the function to populate the job list
+    // Define the function to populate the job details
     function showJobDetails(details) {
         const jobDetails = document.getElementById('jobDetails');
-
         const oldContainer = document.getElementById('detail-container');
+        
         if (oldContainer) {
             oldContainer.remove();
         }
@@ -52,24 +51,26 @@ document.addEventListener("DOMContentLoaded", function() {
         detailContainer.innerHTML = `
                 <h2 class="job-title">${details.title}</h2>
                 <p class="job-detail-text">
-                <b>Job Type:</b> ${details.jobType}<br><br>
-                <b>Employer:</b> ${details.employer}<br><br>
-                <b>Location:</b> <i>${details.location}</i><br><br>
-                <b>Salary Range:</b> $${details.minSalary} -- $${details.maxSalary}
+                    <b>Job Type:</b> ${details.jobType}<br><br>
+                    <b>Employer:</b> ${details.employer}<br><br>
+                    <b>Location:</b> <i>${details.location}</i><br><br>
+                    <b>Salary Range:</b> $${details.minSalary} -- $${details.maxSalary}
                 </p>
                 <p>
-                <b>Description:</b><br>
-                ${details.description}<br><br>
-                <b>Requirements:</b><br>
-                ${details.requirements}<br><br>
-                <b>Benefits:</b><br>
-                ${details.benefits}<br><br>
+                    <b>Description:</b><br>
+                    ${details.description}<br><br>
+                    <b>Requirements:</b><br>
+                    ${details.requirements}<br><br>
+                    <b>Benefits:</b><br>
+                    ${details.benefits}<br><br>
                 </p>
                 <button onclick="window.location.href='/job_platform/communicate?chat_id=${details.employerId}&job_id=${details.jobId}'">Contact Employer</button>
+                <button onclick="window.location.href='/job_platform/views/apply_job.php?job_id=${details.jobId}'">Apply Now</button>
+
+
                 <p>SQL time used for details: ${details.sqlTime}s</p>
             `;
         jobDetails.appendChild(detailContainer);
-
     }
 
     // For job details in communicate.php
@@ -79,5 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (jobId) {
         fetchDetails("job-" + jobId)
     }
-
+    
+    
+    
 });

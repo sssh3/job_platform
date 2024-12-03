@@ -74,8 +74,7 @@ if ($_POST['action'] === 'Login') {
         // Invalid credentials
         // echo "Invalid username or password.";
         $_SESSION["msg"] = "Invalid username or password.";
-        $currentUrl = $_SERVER['PHP_SELF'];
-        header("Location: $currentUrl");
+        header("Location: /job_platform/login");
     }
 } elseif ($_POST['action'] === 'Register') {
     // Check if the user name already exsists
@@ -83,8 +82,7 @@ if ($_POST['action'] === 'Login') {
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         $_SESSION["msg"] = "User name not available.";
-        $currentUrl = $_SERVER['PHP_SELF'];
-        header("Location: $currentUrl");
+        header("Location: /job_platform/login");
         exit;
     }
 
@@ -101,8 +99,7 @@ if ($_POST['action'] === 'Login') {
     // Print time used on page
     $time_used = microtime(true) - $start_time;
     $_SESSION["msg"] =  $_SESSION["msg"] . "<br>Register SQL time used : " . round($time_used, 4) . "s";
-    $currentUrl = $_SERVER['PHP_SELF'];
-    header("Location: $currentUrl");
+    header("Location: /job_platform/login");
 }
 
 

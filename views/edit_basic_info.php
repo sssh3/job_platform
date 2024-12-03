@@ -30,6 +30,8 @@ try {
         $email = $_POST['email'];
         $phone = $_POST['phone'];
         $short_intro = $_POST['short_intro'];
+        $GPA=$_POST['GPA'];
+
 
         // 如果用户已有基本信息，则更新
         if ($user_info) {
@@ -38,7 +40,8 @@ try {
                 family_name = :family_name, 
                 email = :email, 
                 phone = :phone, 
-                short_intro = :short_intro
+                short_intro = :short_intro,
+                GPA=:GPA,
                 WHERE u_id = :u_id");
             $stmt_update->bindParam(':u_id', $u_id);
             $stmt_update->bindParam(':first_name', $first_name);
@@ -46,17 +49,19 @@ try {
             $stmt_update->bindParam(':email', $email);
             $stmt_update->bindParam(':phone', $phone);
             $stmt_update->bindParam(':short_intro', $short_intro);
+            $stmt_update->bindParam(':GPA', $GPA);
             $stmt_update->execute();
         } else {
             // 如果没有记录，插入新的基本信息
             $stmt_insert = $pdo->prepare("INSERT INTO jobseekers 
-                (u_id, first_name, family_name, email, phone, short_intro) 
+                (u_id, first_name, family_name, email, GPA,phone, short_intro) 
                 VALUES 
-                (:u_id, :first_name, :family_name, :email, :phone, :short_intro)");
+                (:u_id, :first_name, :family_name, :email,:GPA, :phone, :short_intro)");
             $stmt_insert->bindParam(':u_id', $u_id);
             $stmt_insert->bindParam(':first_name', $first_name);
             $stmt_insert->bindParam(':family_name', $family_name);
             $stmt_insert->bindParam(':email', $email);
+            $stmt_insert->bindParam(':GPA', $GPA);
             $stmt_insert->bindParam(':phone', $phone);
             $stmt_insert->bindParam(':short_intro', $short_intro);
             $stmt_insert->execute();
@@ -183,7 +188,10 @@ hr {
 
         <label for="email">Email:</label>
         <input type="email" name="email" value="<?php echo isset($user_info['email']) ? $user_info['email'] : ''; ?>" required><br>
-
+        
+        <label for="GPA">Email:</label>
+        <input type="GPA" name="GPA" value="<?php echo isset($user_info['GPA']) ? $user_info['GPA'] : ''; ?>" required><br>
+        
         <label for="phone">Phone:</label>
         <input type="tel" name="phone" value="<?php echo isset($user_info['phone']) ? $user_info['phone'] : ''; ?>" required><br>
 

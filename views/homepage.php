@@ -49,8 +49,13 @@ if ($path !== '/job_platform/login') {
         </li>
         <?php endif;?>
     </ul>
-    
 
+    <?php if (isset($_SESSION["msg"])) {
+        $msg = $_SESSION["msg"];
+        UNSET($_SESSION["msg"]);
+        echo "<p> $msg </p>";
+    } ?>
+    
     </header>
 
     <nav>
