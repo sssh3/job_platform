@@ -158,6 +158,11 @@ $statusMap = [
     .status-buttons button:active {
         transform: scale(0.95);  
     }
+
+    .job-overview:hover {
+        background-color: initial;
+        color: initial;
+    }
     </style>
 </head>
 <?php include 'header.php'; ?>
@@ -201,6 +206,16 @@ $statusMap = [
                 </div>
             <?php endforeach; ?>
         </div>
+
+
+        
+        <br>
+        <ul class="jobs-management-list" id="jobs-management-list">
+            <script src="/job_platform/assets/js/jobsManagement.js"></script>
+        </ul>
+        <div id="companyId" value=<?php echo $companyId;?>></div>
+        <p id="filters-sql-time"></p>
+        <p id="matches"></p>
     </div>
 </body>
 <?php include 'footer.php'; ?>
