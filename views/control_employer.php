@@ -163,6 +163,20 @@ $statusMap = [
         background-color: initial;
         color: initial;
     }
+
+    button {
+    background-color: #3498db;  /* 统一按钮颜色为蓝色 */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
     </style>
 </head>
 <?php include 'header.php'; ?>

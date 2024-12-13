@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         // Clear existing job items
         jobList.innerHTML = `
-        <h2>Posted Jobs Management
+        <h2>Posted Jobs Management &nbsp;&nbsp;&nbsp;&nbsp;
         <button onclick="window.location.href='/job_platform/views/post_job.php'">Post A New Job</button>
         </h2>
         `;
