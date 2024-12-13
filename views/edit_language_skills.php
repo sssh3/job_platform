@@ -16,7 +16,8 @@ $pass = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    // Start measuring SQL execution time
+    $start_time = microtime(true);
     // Fetch existing language skills
     $stmt = $pdo->prepare("SELECT * FROM language_skills WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
@@ -67,7 +68,9 @@ try {
         header('Location: edit_language_skills.php');
         exit;
     }
-
+    // 记录结束时间并计算总时间
+    $end_time = microtime(true);
+    $sql_time = $end_time - $start_time;
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
@@ -162,6 +165,12 @@ try {
     border: 1px solid #ddd;
     margin: 20px 0;
     }
+    /* SQL 执行时间显示 */
+    .sql-time {
+            margin-top: 20px;
+            font-size: 14px;
+            
+        }
 </style>
 
 <body>
@@ -216,6 +225,9 @@ try {
         </form>
         <hr>
     <?php endforeach; ?>
+    <div class="sql-time">
+        <p>SQL execution time: <?php echo number_format($sql_time, 6); ?> seconds.</p>
+    </div>
 </div>
 <?php include 'footer.php'; ?>
 </body>

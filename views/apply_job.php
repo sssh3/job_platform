@@ -33,42 +33,64 @@ try {
     exit();
 }
 
+// 记录脚本开始执行时间
+$startTime = microtime(true);  
+
 // 获取当前用户的资料
-$stmt = $pdo->prepare("SELECT * FROM jobSeekers WHERE u_id = :user_id");
+$stmt = $pdo->prepare("SELECT * FROM users WHERE u_id = :user_id");
 $stmt->execute(['user_id' => $userId]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-$result = [];
-
 if (!$user) {
-    $result = ['success' => false, 'message' => 'You are not a jobseeker, and therefore cannot apply for jobs.'];
+    $result = ['success' => false, 'message' => 'User not found.'];
 } else {
-    // 检查用户是否已上传简历
-    if (empty($user['resume'])) {
-        $result = ['success' => false, 'message' => 'You have not uploaded your resume yet. Please update your profile and upload your resume before applying for jobs.'];
+    // 判断用户类型是否是 job-seeker（假设 'user_type_id' 为 3 或 0 代表求职者）
+    if (!in_array($user['user_type_id'], [3, 0])) {
+        $result = ['success' => false, 'message' => 'You are not a job seeker, and therefore cannot apply for jobs.'];
     } else {
-        // 检查用户是否已申请该职位
-        $stmt = $pdo->prepare("SELECT * FROM applications WHERE job_id = :job_id AND user_id = :user_id");
-        $stmt->execute(['job_id' => $jobId, 'user_id' => $userId]);
-        $application = $stmt->fetch(PDO::FETCH_ASSOC);
+        // 获取 jobSeekers 表中的简历信息
+        $stmt = $pdo->prepare("SELECT * FROM jobSeekers WHERE u_id = :user_id");
+        $stmt->execute(['user_id' => $userId]);
+        $jobSeeker = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$application) {
-            // 如果没有申请过该职位，则插入新记录，并将状态设置为 'applied'
-            $query = "INSERT INTO applications (user_id, job_id, resume_url, status) VALUES (:user_id, :job_id, :resume_url, 'applied')";
-            try {
-                $stmt = $pdo->prepare($query);
-                // 插入申请记录，并将简历 URL 从 jobSeekers 表传入
-                $stmt->execute(['user_id' => $userId, 'job_id' => $jobId, 'resume_url' => $user['resume']]);
-
-                $result = ['success' => true, 'message' => 'You have successfully applied for this job. You can check your job application progress in your control panel.'];
-            } catch (PDOException $e) {
-                $result = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
-            }
+        // 如果没有找到 jobSeeker 信息
+        if (!$jobSeeker) {
+            $result = ['success' => false, 'message' => 'You have not entered your personal information in the profile, and therefore cannot apply for jobs.'];
         } else {
-            $result = ['success' => false, 'message' => 'You have already applied for this job. You can check your job application progress in your control panel.'];
+            // 检查用户是否已上传简历
+            if (empty($jobSeeker['resume'])) {
+                $result = ['success' => false, 'message' => 'You have not uploaded your resume yet. Please update your profile and upload your resume before applying for jobs.'];
+            } else {
+                // 检查用户是否已申请该职位
+                $stmt = $pdo->prepare("SELECT * FROM applications WHERE job_id = :job_id AND user_id = :user_id");
+                $stmt->execute(['job_id' => $jobId, 'user_id' => $userId]);
+                $application = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if (!$application) {
+                    // 如果没有申请过该职位，则插入新记录，并将状态设置为 'applied'
+                    $query = "INSERT INTO applications (user_id, job_id, resume_url, status) VALUES (:user_id, :job_id, :resume_url, 'applied')";
+                    try {
+                        $stmt = $pdo->prepare($query);
+                        // 插入申请记录，并将简历 URL 从 jobSeekers 表传入
+                        $stmt->execute(['user_id' => $userId, 'job_id' => $jobId, 'resume_url' => $jobSeeker['resume']]);
+
+                        $result = ['success' => true, 'message' => 'You have successfully applied for this job. You can check your job application progress in your control panel.'];
+                    } catch (PDOException $e) {
+                        $result = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+                    }
+                } else {
+                    $result = ['success' => false, 'message' => 'You have already applied for this job. You can check your job application progress in your control panel.'];
+                }
+            }
         }
     }
 }
+
+// 记录脚本结束时间
+$endTime = microtime(true);  
+
+// 计算总查询执行时间
+$totalQueryTime = round($endTime - $startTime, 4);  // 保留四位小数
 ?>
 
 <!DOCTYPE html>
@@ -166,6 +188,8 @@ if (!$user) {
         <?php else : ?>
             <a href="/job_platform/views/jobs.php" class="btn">Go back to Job List</a>
         <?php endif; ?>
+
+        <p>Total SQL Query Time: <?php echo $totalQueryTime; ?> seconds</p>
 
         <?php
         if (isset($_SESSION["msg"])) {

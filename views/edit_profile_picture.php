@@ -17,11 +17,18 @@ try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Track SQL execution time
+    $start_time = microtime(true); // Start timing
+
     // Get the current user's avatar BLOB data
     $stmt = $pdo->prepare("SELECT avatar FROM jobseekers WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
     $stmt->execute();
     $jobseeker = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // End SQL execution time and calculate duration
+    $end_time = microtime(true);
+    $sql_time = $end_time - $start_time;
 
     // Upload avatar
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['avatar'])) {
@@ -34,11 +41,18 @@ try {
             // Read the file content as binary data
             $avatar_data = file_get_contents($avatar['tmp_name']);
 
+            // Start timing for update operation
+            $start_time = microtime(true);
+
             // Update the avatar field in the database
             $stmt_update = $pdo->prepare("UPDATE jobseekers SET avatar = :avatar WHERE u_id = :u_id");
             $stmt_update->bindParam(':avatar', $avatar_data, PDO::PARAM_LOB);
             $stmt_update->bindParam(':u_id', $u_id);
             $stmt_update->execute();
+
+            // End timing for update operation
+            $end_time = microtime(true);
+            $sql_time = $end_time - $start_time;
 
             echo "<script>alert('Profile picture uploaded successfully!'); window.location.href='edit_profile_picture.php';</script>";
         }
@@ -46,10 +60,17 @@ try {
 
     // Delete avatar
     if (isset($_POST['delete_avatar']) && $jobseeker && $jobseeker['avatar']) {
+        // Start timing for delete operation
+        $start_time = microtime(true);
+
         // Update the avatar field in the database to NULL
         $stmt_delete = $pdo->prepare("UPDATE jobseekers SET avatar = NULL WHERE u_id = :u_id");
         $stmt_delete->bindParam(':u_id', $u_id);
         $stmt_delete->execute();
+
+        // End timing for delete operation
+        $end_time = microtime(true);
+        $sql_time = $end_time - $start_time;
 
         echo "<script>alert('Avatar deleted successfully!'); window.location.href='edit_profile_picture.php';</script>";
     }
@@ -171,6 +192,13 @@ try {
         .btn-delete:hover {
             background-color: #c0392b;
         }
+
+        /* SQL execution time display style */
+        .sql-time {
+            margin-top: 20px;
+            font-size: 14px;
+            
+        }
     </style>
 </head>
 <body>
@@ -194,6 +222,11 @@ try {
 
         <button type="submit">Upload Avatar</button>
     </form>
+
+    <!-- Display SQL execution time -->
+    <div class="sql-time">
+        <p>SQL execution time for fetching avatar: <?php echo number_format($sql_time, 6); ?> seconds.</p>
+    </div>
 
     <?php if ($jobseeker['avatar']): ?>
         <h3>Current Avatar:</h3>

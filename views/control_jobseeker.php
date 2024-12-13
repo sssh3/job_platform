@@ -33,27 +33,16 @@ try {
 $userId = $_SESSION['user_id'];  // 获取当前用户的 ID
 $showPopup = false;  // 控制是否显示弹窗
 
-// 获取当前用户的投递申请信息
-$stmt = $pdo->prepare("SELECT * FROM applications WHERE user_id = :user_id");
+// 获取当前用户的投递申请信息，同时联结职位和公司信息
+$stmt = $pdo->prepare("
+    SELECT a.application_id, a.job_id, a.status, j.job_title, u.user_name AS company_name 
+    FROM applications a
+    JOIN jobs j ON a.job_id = j.job_id
+    LEFT JOIN users u ON j.employer_id = u.u_id  -- 连接 users 表，获取公司名称
+    WHERE a.user_id = :user_id
+");
 $stmt->execute(['user_id' => $userId]);
 $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// 获取职位的 job_title 和 employer_id，以及公司名称 company_name
-foreach ($applications as &$application) {
-    // 获取 job_title 和 employer_id
-    $jobStmt = $pdo->prepare("SELECT job_title, employer_id FROM jobs WHERE job_id = :job_id");
-    $jobStmt->execute(['job_id' => $application['job_id']]);
-    $job = $jobStmt->fetch(PDO::FETCH_ASSOC);
-
-    // 获取公司名称 company_name
-    $companyStmt = $pdo->prepare("SELECT company_name FROM companies WHERE u_id = :employer_id");
-    $companyStmt->execute(['employer_id' => $job['employer_id']]);
-    $company = $companyStmt->fetch(PDO::FETCH_ASSOC);
-
-    // 添加 job_title 和 company_name 到 application 数组，如果公司不存在，设置为 null
-    $application['job_title'] = $job['job_title'];
-    $application['company_name'] = $company ? $company['company_name'] : null;
-}
 
 // 处理撤回投递请求
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'withdraw') {
@@ -64,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $stmt->execute(['application_id' => $applicationId, 'user_id' => $userId]);
 
     // 设置弹窗显示
-    $showPopup = true;
+    $_SESSION['showPopup'] = true;
 }
 
 // 状态映射，用于控制进度条的百分比
@@ -73,9 +62,14 @@ $statusMap = [
     'resume_viewed' => 25, // 简历被查看
     'interview' => 50, // 面试
     'offer' => 100, // 已录取
-    'rejected' => 100, // 被拒绝
+    'rejected' => 0, // 被拒绝
     'withdrawn' => 0, // 撤回
 ];
+
+// 处理关闭弹窗
+if (isset($_POST['action']) && $_POST['action'] == 'closePopup') {
+    $_SESSION['showPopup'] = false;
+}
 ?>
 
 <!DOCTYPE html>
@@ -193,13 +187,20 @@ $statusMap = [
             left: 50%;
             transform: translate(-50%, -50%);
             background-color: white;
-            padding: 20px;
-            border: 1px solid #ccc;
+            padding: 25px;
+            border: 2px solid #4caf50;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 9999;
             text-align: center;
             width: 300px;
+            max-width: 90%;
+        }
+
+        .popup p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         .popup button {
@@ -209,10 +210,22 @@ $statusMap = [
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
         }
 
         .popup button:hover {
             background-color: #45a049;
+        }
+
+        .popup button:active {
+            transform: scale(0.95);
+        }
+
+        /* 按钮样式调整 */
+        .status-buttons button, .withdraw-button {
+            width: auto;
         }
     </style>
 </head>
@@ -245,13 +258,27 @@ $statusMap = [
         </div>
     </div>
 
-    <!-- 弹窗 -->
-    <?php if ($showPopup): ?>
-        <div class="popup">
+   <!-- 弹窗 -->
+   <?php if (isset($_SESSION['showPopup']) && $_SESSION['showPopup'] === true): ?>
+        <div class="popup" id="popup">
             <p>You have successfully withdrawn your application.</p>
-            <button onclick="window.location.reload();">OK</button>
+            <form method="POST">
+                <button type="submit" name="action" value="closePopup">OK</button>
+            </form>
         </div>
     <?php endif; ?>
+
+    <script>
+        // 弹窗的关闭逻辑
+        function closePopup() {
+            // 隐藏弹窗
+            document.getElementById('popup').style.display = 'none';
+            // 延时刷新页面，以确保页面加载完成
+            setTimeout(function() {
+                window.location.reload();
+            }, 200);
+        }
+    </script>
 </body>
 
 <?php include 'footer.php'; ?>

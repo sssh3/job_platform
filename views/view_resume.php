@@ -16,6 +16,8 @@ $pass = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Track SQL execution time
+    $start_time = microtime(true); // Start timing
 
     $stmt = $pdo->prepare("SELECT * FROM jobseekers WHERE u_id = :u_id");
     $stmt->bindParam(':u_id', $u_id);
@@ -41,6 +43,9 @@ try {
     $stmt_activity->bindParam(':u_id', $u_id);
     $stmt_activity->execute();
     $activities = $stmt_activity->fetchAll(PDO::FETCH_ASSOC);
+   // 记录结束时间并计算总时间
+   $end_time = microtime(true);
+   $sql_time = $end_time - $start_time;
 
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -56,7 +61,14 @@ try {
     <link rel="stylesheet" href="/job_platform/assets/css/jobseekerStyle.css">
     <title>Jobseeker Resume</title>
 </head>
-
+<style>
+/* SQL 执行时间显示 */
+.sql-time {
+            margin-top: 20px;
+            font-size: 14px;
+            
+        }
+    </style>
 <body>
     <?php include 'header.php'; ?>
     <?php if (isset($_SESSION["msg"])) {
@@ -139,7 +151,9 @@ try {
                 <p>No resume uploaded.</p>
             <?php endif; ?>
         </div>
-
+        <div class="sql-time">
+        <p>SQL execution time: <?php echo number_format($sql_time, 6); ?> seconds.</p>
+        </div>
     </div>
 
     <?php include 'footer.php'; ?>

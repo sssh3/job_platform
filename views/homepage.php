@@ -72,39 +72,54 @@ if ($path !== '/job_platform/login') {
         </div>
 
         <div class="section" id="register-login">
-            <h2>1. User Registration/Login</h2>
-            <p>Register or log in as a job seeker or a recruitment company. Quick registration supported via email or mobile.</p>
+           <a href="/job_platform/login"> 
+                <h2>1. User Registration/Login</h2>
+           </a>
+            <p style="font - size: 26px; color: blue;" >Cover four user types: </p>
+            <p>The registration and login procedures for job seekers or employers</p>
+            <p>Administrator login (enabling direct modification and access to the database)</p>
+            <p>Visitor login (where a visitor is restricted from sending messages or creating applications/job positions)</p>
         </div>
 
-        <div class="section" id="resume-management">
-            <h2>2. Resume Management</h2>
-            <p>Upload profile pictures, edit resumes, and manage work experience, education, and skills.</p>
+        <div class="section" id="profile-management">
+            <h2>2. Profile Management</h2>
+            <p style="font - size: 26px; color: blue;">|Click on the "Profile" button on the login menu after login|</p>
+                <p>For Jobseekers: Upload a personal profile picture, edit and manage their personal resumes, which include basic information, certifications, language skills, internship experience, and extracurricular activities</p> 
+                <p>For Employers: Upload company profiles, such as the company name, industry, location, company size, website, social media accounts, and a description of the company</p> 
         </div>
 
 
-        <div class="section" id="job-matching">
-            <h2>3. Job Search/Matching</h2>
-            <p>Search for jobs by location or industry type. Receive recommendations for highly matched jobs.</p>
+        <div class="section" id="job-browsing">
+            <a href="/job_platform/jobs">
+                <h2>3. Job Browsing</h2>
+            </a>
+            <p style="font - size: 26px; color: blue;">|Click on the "Browse Job" button on the navigation bar|</p>
+            <p>Filtering jobs according to location, job type, and job title </p>
+            <p>Job seekers can view basic information about jobs that meet the filter criteria and click on the basic information to access job details </p>
         </div>
 
-        <div class="section" id="recruitment-management">
-            <h2>4. Recruitment Company Management</h2>
-            <p>Post job requirements, manage applicants, view resumes, and track application statuses.</p>
+        <div class="section" id="communication">
+            <h2>4. Communication</h2>
+            <p style="font - size: 26px; color: blue;">|Click on the "contact employer" button on the job details pages|</p>
+            <p>Enables job seekers send a message to the employer in order to gain more insights about the job</p>
         </div>
 
-        <div class="section" id="interview">
-            <h2>5. Interview Arrangement</h2>
-            <p>Coordinate interview times and communicate directly to ensure smooth recruitment processes.</p>
+        <div class="section" id="application">
+            <h2>5. Application</h2>
+            <p style="font - size: 26px; color: blue;">|Click on the "apply now" button on the job details pages|</p>
+            <p>Allows job seeker to apply for suitable jobs</p>
         </div>
 
-        <div class="section" id="application-management">
-            <h2>6. Job Application Management</h2>
-            <p>Apply for jobs, check application statuses, receive interview notifications, and communicate with companies.</p>
+        <div class="section" id="recruitment company management">
+            <h2>6. Recruitment company management</h2>
+            <p style="font - size: 26px; color: blue;">|Employer control panel|</p>
+            <p>Display all the received resumes and provide buttons for viewing, interviewing, offering/rejecting.</p>
         </div>
 
-        <div class="section" id="analytics">
-            <h2>7. Data Analysis/Feedback</h2>
-            <p>Analyze resume submissions for companies and provide job seekers with feedback on interviews.</p>
+        <div class="section" id="job application management">
+            <h2>7. Job application management</h2>
+            <p style="font - size: 26px; color: blue;">|Jobseeker control panel|</p>
+            <p>Allows job seekers to view the list of jobs they have applied for and the application status (Delivered → Resume is viewed → Interview → feedback)</p>
         </div>
     </div>
 
