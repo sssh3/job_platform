@@ -94,32 +94,23 @@ if ($path !== '/job_platform/login') {
                 <h2>3. Job Browsing</h2>
             </a>
             <p style="font - size: 26px; color: blue;">|Click on the "Browse Job" button on the navigation bar|</p>
-            <p>Filtering jobs according to location, job type, and job title </p>
-            <p>Job seekers can view basic information about jobs that meet the filter criteria and click on the basic information to access job details </p>
+            <p>Employers can post new jobs and the job will be displayed at browse job page</p>
+            <p>Job seekers can filtering jobs according to location, job type, and job title and view basic information about jobs that meet the filter criteria and click on the basic </p>
+            <p>information to access job details </p>
         </div>
 
         <div class="section" id="communication">
             <h2>4. Communication</h2>
             <p style="font - size: 26px; color: blue;">|Click on the "contact employer" button on the job details pages|</p>
-            <p>Enables job seekers send a message to the employer in order to gain more insights about the job</p>
+            <p>Enables job seekers send a message to the employer</p>
         </div>
 
         <div class="section" id="application">
             <h2>5. Application</h2>
-            <p style="font - size: 26px; color: blue;">|Click on the "apply now" button on the job details pages|</p>
-            <p>Allows job seeker to apply for suitable jobs</p>
-        </div>
-
-        <div class="section" id="recruitment company management">
-            <h2>6. Recruitment company management</h2>
-            <p style="font - size: 26px; color: blue;">|Employer control panel|</p>
-            <p>Display all the received resumes and provide buttons for viewing, interviewing, offering/rejecting.</p>
-        </div>
-
-        <div class="section" id="job application management">
-            <h2>7. Job application management</h2>
-            <p style="font - size: 26px; color: blue;">|Jobseeker control panel|</p>
-            <p>Allows job seekers to view the list of jobs they have applied for and the application status (Delivered → Resume is viewed → Interview → feedback)</p>
+            <p style="font - size: 26px; color: blue;">|Enable participation from both job seekers and employers|</p>
+            <p>Jobseeker: Allows job seekers to apply for suitable jobs and view the list of jobs they have applied for </p>
+            <p>Employer: Display all the received resumes and provide buttons for viewing, interviewing, offering/rejecting at control panel</p>
+            <p>The application status (Delivered → Resume is viewed → Interview → feedback) is displayed to both jobseeker and employer </p>
         </div>
     </div>
 
@@ -141,7 +132,7 @@ if ($path !== '/job_platform/login') {
 
         // Check if we have any messages
         if ($messages) {
-            // Select a random message
+            // Select a random messages
             $randomMessage = $messages[array_rand($messages)];
             echo "For " . $type . "s: " . $randomMessage;
         } else {

@@ -56,6 +56,22 @@ try {
         $conn->exec($sql);
         echo "Table 'users' created successfully<br>";
 
+        // Create a trigger to handle updates to user_type_id in user_types table
+        $sql = "
+            CREATE TRIGGER after_user_types_update
+            AFTER UPDATE ON user_types
+            FOR EACH ROW
+            BEGIN
+                IF NEW.user_type_id <> OLD.user_type_id THEN
+                    UPDATE users
+                    SET user_type_id = NEW.user_type_id
+                    WHERE user_type_id = OLD.user_type_id;
+                END IF;
+            END;
+        ";
+
+        $conn->exec($sql);
+
         // Create admin and visitor
         $sql = "INSERT INTO users (user_name, `password`, user_type_id) VALUES 
                     ('admin', 'admin', 0),
@@ -233,6 +249,67 @@ try {
         $conn->exec($sql);
         echo "Table 'jobs' created successfully<br>";
 
+        // Add min_salary constraint
+        $sql = "
+            ALTER TABLE jobs
+            ADD CONSTRAINT chk_min_salary
+            CHECK (min_salary > 0 AND min_salary % 100 = 0);
+        ";
+        $conn->exec($sql);
+
+        // Add max_salary constraint
+        $sql = "
+            ALTER TABLE jobs
+            ADD CONSTRAINT chk_max_salary
+            CHECK (max_salary > min_salary AND max_salary % 100 = 0);
+        ";
+        $conn->exec($sql);
+
+        // Create trigger to update job_type_id
+        $sql = "
+            CREATE TRIGGER jobs_after_job_types_update
+            AFTER UPDATE ON job_types
+            FOR EACH ROW
+            BEGIN
+                IF NEW.job_type_id <> OLD.job_type_id THEN
+                    UPDATE jobs
+                    SET job_type_id = NEW.job_type_id
+                    WHERE job_type_id = OLD.job_type_id;
+                END IF;
+            END;
+        ";
+
+        $conn->exec($sql);
+
+        // Trigger to update address_id
+        $sql = "
+            CREATE TRIGGER jobs_after_cities_update
+            AFTER UPDATE ON cities
+            FOR EACH ROW
+            BEGIN
+                IF NEW.address_id <> OLD.address_id THEN
+                    UPDATE jobs
+                    SET address_id = NEW.address_id
+                    WHERE address_id = OLD.address_id;
+                END IF;
+            END;
+        ";
+
+        $conn->exec($sql);
+
+        // Create trigger for cascading delete on employer_id
+        $sql = "
+            CREATE TRIGGER jobs_after_users_delete
+            AFTER DELETE ON users
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM jobs
+                WHERE employer_id = OLD.u_id;
+            END;
+        ";
+
+        $conn->exec($sql);
+
         // Insert 90,000 job instances according to the population in each city
         // Dics for job_title
         $adjectives = array(
@@ -357,6 +434,29 @@ try {
         );";
         $conn->exec($sql);
         echo "messages table created<br>";
+
+        // Create trigger for cascading delete on sender_id
+        $sql = "
+            CREATE TRIGGER after_users_delete_sender
+            AFTER DELETE ON users
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM messages
+                WHERE sender_id = OLD.u_id;
+            END;
+        ";
+        $conn->exec($sql);
+
+        $sql = "
+            CREATE TRIGGER after_users_delete_receiver
+            AFTER DELETE ON users
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM messages
+                WHERE receiver_id = OLD.u_id;
+            END;
+        ";
+        $conn->exec($sql);
 
 
     }
