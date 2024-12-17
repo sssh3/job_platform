@@ -110,8 +110,10 @@ try {
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":password", $password);
 
+        $numEmployers = 30000;
+
         $uniqueUsernames = [];
-        for ($i = 0; $i < 30000; $i++) {
+        for ($i = 0; $i < $numEmployers; $i++) {
             do {
                 $username = generateName($adjectives, $nouns, $suffixes);
             } while (isset($uniqueUsernames[$username])); // Check for uniqueness
@@ -447,6 +449,7 @@ try {
         ";
         $conn->exec($sql);
 
+        // Create trigger for cascading delete on receiver_id
         $sql = "
             CREATE TRIGGER after_users_delete_receiver
             AFTER DELETE ON users
@@ -458,6 +461,52 @@ try {
         ";
         $conn->exec($sql);
 
+
+        // Generate jobseekers
+        $prefixes = ["Mr.", "Ms.", "Dr.", "Prof.", "Miss", "Mrs.", "Master", "Hon.", "Rev.", "Sir"];
+        $first_names = [
+            "Peter", "John", "Mary", "Linda", "James", "Susan", "Robert", "Jessica", "William", "Karen",
+            "Michael", "Elizabeth", "David", "Sarah", "Daniel", "Nancy", "Mark", "Lisa", "Thomas", "Betty",
+            "Joshua", "Margaret", "Christopher", "Sandra", "Anthony", "Ashley", "Andrew", "Kimberly", "Joseph", "Emily",
+            "Charles", "Donna", "Paul", "Dorothy", "Steven", "Heather", "Kenneth", "Sharon", "Brian", "Michelle",
+            "George", "Laura", "Edward", "Cynthia", "Ronald", "Angela", "Kevin", "Deborah", "Jason", "Stephanie",
+            "Jeffrey", "Rebecca", "Ryan", "Virginia", "Jacob", "Kathleen", "Gary", "Amy", "Nicholas", "Shirley",
+            "Eric", "Anna", "Jonathan", "Brenda", "Stephen", "Pamela", "Larry", "Emma", "Justin", "Nicole",
+            "Scott", "Catherine", "Brandon", "Christine", "Benjamin", "Samantha", "Samuel", "Debra", "Gregory", "Rachel",
+            "Frank", "Carol", "Raymond", "Janet", "Alexander", "Maria", "Patrick", "Heather", "Jack", "Diane"
+        ];
+        $last_names = [
+            "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis", "Miller", "Wilson", "Moore", "Taylor",
+            "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez", "Robinson",
+            "Clark", "Rodriguez", "Lewis", "Lee", "Walker", "Hall", "Allen", "Young", "Hernandez", "King",
+            "Wright", "Lopez", "Hill", "Scott", "Green", "Adams", "Baker", "Gonzalez", "Nelson", "Carter",
+            "Mitchell", "Perez", "Roberts", "Turner", "Phillips", "Campbell", "Parker", "Evans", "Edwards", "Collins",
+            "Stewart", "Sanchez", "Morris", "Rogers", "Reed", "Cook", "Morgan", "Bell", "Murphy", "Bailey",
+            "Rivera", "Cooper", "Richardson", "Cox", "Howard", "Ward", "Torres", "Peterson", "Gray", "Ramirez",
+            "James", "Watson", "Brooks", "Kelly", "Sanders", "Price", "Bennett", "Wood", "Barnes", "Ross",
+            "Henderson", "Coleman", "Jenkins", "Perry", "Powell", "Long", "Patterson", "Hughes", "Flores", "Washington"
+        ];
+
+        $stmt = $conn->prepare("INSERT INTO users (user_name, password, user_type_id) VALUES (:username, :password, 3)");
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":password", $password);
+
+        $numJobseekers = 60000;
+
+        $uniqueUsernames = [];
+        for ($i = 0; $i < $numJobseekers; $i++) {
+            do {
+                $username = generateName($prefixes, $first_names, $last_names);
+            } while (isset($uniqueUsernames[$username])); // Check for uniqueness
+            
+            $uniqueUsernames[$username] = true;
+        
+            $password = "defaultPassword"; // Use a default password for testing
+        
+            // Execute the statement
+            $stmt->execute();
+        }
+        echo "60,000 jobseeker users have been generated!<br>";
 
     }
 } catch (PDOException $e) {

@@ -35,7 +35,7 @@ $showPopup = false;  // 控制是否显示弹窗
 
 // 获取当前用户的投递申请信息，同时联结职位和公司信息
 $stmt = $pdo->prepare("
-    SELECT a.application_id, a.job_id, a.status, j.job_title, u.user_name AS company_name 
+    SELECT a.application_id, a.job_id, a.status, j.job_title, u.user_name AS company_name, j.employer_id
     FROM applications a
     JOIN jobs j ON a.job_id = j.job_id
     LEFT JOIN users u ON j.employer_id = u.u_id  -- 连接 users 表，获取公司名称
@@ -245,6 +245,12 @@ if (isset($_POST['action']) && $_POST['action'] == 'closePopup') {
                     <div class="progress-bar">
                         <div class="progress" style="width: <?php echo $statusMap[$application['status']] ?>%"></div>
                     </div>
+                    <a href="/job_platform/communicate?chat_id=<?php echo $application['employer_id']; ?>&job_id=<?php echo $application['job_id']; ?>" 
+                        class="status-buttons" 
+                        target="_blank"
+                        style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 4px; text-align: center;">
+                        Contact Employer
+                    </a>
 
                     <!-- 撤回投递按钮 -->
                     <?php if ($application['status'] !== 'withdrawn') : ?>
@@ -252,13 +258,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'closePopup') {
                             <input type="hidden" name="application_id" value="<?php echo $application['application_id']; ?>">
                             <button type="submit" name="action" value="withdraw" class="withdraw-button">Withdraw Application</button>
                         </form>
-                    
-                    <!-- 添加“联系雇主”按钮 -->
-                    <form method="GET" action="/job_platform/communicate" class="status-buttons">
-                    <input type="hidden" name="chat_id" value="<?php echo $application['company_name']; ?>"> <!-- 使用正确的 company_id -->
-                    <input type="hidden" name="job_id" value="<?php echo $application['job_id']; ?>">
-                    <button type="submit" class="withdraw-button">Contact Employer</button>
-                    </form>
+                
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>

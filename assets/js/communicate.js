@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    // Fetch new messages every 5 seconds
+    // Fetch new messages every 0.5 seconds
     fetchMessages()
-    setInterval(fetchMessages, 5000);
+    setInterval(fetchMessages, 500);
 
     async function fetchMessages() {
         try {

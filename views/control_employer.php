@@ -318,6 +318,12 @@ button:hover {
                 <p>Status: <span id="status-<?php echo $application['application_id']; ?>"><?php echo $statusMap[$application['status']]; ?></span></p>
                 <p>Resume: <a href="/job_platform/views/view_resume.php?user_id=<?php echo htmlspecialchars($application['user_id']); ?>" target="_blank">View Resume</a></p>
 
+                <a href="/job_platform/communicate?chat_id=<?php echo $application['user_id']; ?>&job_id=<?php echo $application['job_id']; ?>" 
+                        class="status-buttons" 
+                        target="_blank"
+                        style="text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 4px; text-align: center;">
+                        Contact Applicant
+                </a>
                 <div class="status-buttons">
                     <?php if ($application['status'] == 'applied') : ?>
                         <button class="status-action" data-application-id="<?php echo $application['application_id']; ?>" data-action="view_resume">View Resume</button>

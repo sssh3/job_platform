@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <b>Benefits:</b><br>
                     ${details.benefits}<br><br>
                 </p>
-                <button onclick="window.location.href='/job_platform/communicate?chat_id=${details.employerId}&job_id=${details.jobId}'">Contact Employer</button>
+                <button onclick="window.open('/job_platform/communicate?chat_id=${details.employerId}&job_id=${details.jobId}', '_blank')">Contact Employer</button>
                 <button onclick="window.location.href='/job_platform/views/apply_job.php?job_id=${details.jobId}'">Apply Now</button>
 
 
