@@ -76,7 +76,19 @@ if (!$user) {
 
                         $result = ['success' => true, 'message' => 'You have successfully applied for this job. You can check your job application progress in your control panel.'];
                     } catch (PDOException $e) {
-                        $result = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+                        // 捕获触发器引发的错误信息
+                        $errorMessage = $e->getMessage();
+                        // 提取自定义错误信息
+                        if (strpos($errorMessage, 'You have not uploaded your resume yet.') !== false) {
+                            $result = ['success' => false, 'message' => 'You have not uploaded your resume yet. Please update your profile and upload your resume before applying for jobs.'];
+                        } elseif (strpos($errorMessage, 'You are not a job seeker, and therefore cannot apply for jobs.') !== false) {
+                            $result = ['success' => false, 'message' => 'You are not a job seeker, and therefore cannot apply for jobs.'];
+                        } elseif (strpos($errorMessage, 'You have already applied for this job.') !== false) {
+                            $result = ['success' => false, 'message' => 'You have already applied for this job.'];
+                        } else {
+                            // 如果是其他错误，显示其错误信息
+                            $result = ['success' => false, 'message' => 'Error: ' . $errorMessage];
+                        }
                     }
                 } else {
                     $result = ['success' => false, 'message' => 'You have already applied for this job. You can check your job application progress in your control panel.'];
@@ -182,29 +194,13 @@ $totalQueryTime = round($endTime - $startTime, 4);  // 保留四位小数
             ?>
         </p>
 
-        <?php if ($result['success']) : ?>
-            <a href="/job_platform/views/jobs.php" class="btn">Go back to Job Details</a>
-            <a href="/job_platform/views/control_jobseeker.php" class="btn">Go to control panel to check apply process</a>
-        <?php else : ?>
-            <a href="/job_platform/views/jobs.php" class="btn">Go back to Job List</a>
-        <?php endif; ?>
+        <!-- 返回按钮 -->
+        <a href="/job_platform/views/jobs.php?job_id=<?php echo htmlspecialchars($jobId); ?>" class="btn">Back to Job Details</a>
 
-        <p>Total SQL Query Time: <?php echo $totalQueryTime; ?> seconds</p>
-
-        <?php
-        if (isset($_SESSION["msg"])) {
-            $msg = $_SESSION["msg"];
-            unset($_SESSION["msg"]);
-            echo "<p>" . htmlspecialchars($msg) . "</p>";
-        } 
-        ?>
     </div>
 
     <footer>
-        <p>Job Platform &copy; 2024</p>
+        <p>&copy; 2024 Job Platform. All Rights Reserved.</p>
     </footer>
 </body>
-
-<?php include 'footer.php'; ?>
-
 </html>

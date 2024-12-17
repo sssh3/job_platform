@@ -27,10 +27,10 @@ try {
         // Skip creating tables
         // echo "Tables for user profile already exist.<br>";
     } else {
-        // 创建数据库
-        $sql = "CREATE DATABASE IF NOT EXISTS job_platform_db";
-        $conn->exec($sql);
-        echo "Database 'job_platform_db' created successfully<br>";
+        // // 创建数据库
+        // $sql = "CREATE DATABASE IF NOT EXISTS job_platform_db";
+        // $conn->exec($sql);
+        // echo "Database 'job_platform_db' created successfully<br>";
     
 
         // 选择数据库
@@ -53,6 +53,15 @@ try {
         $conn->exec($sql);
         echo "Table 'companies' created successfully<br>";
         
+       // 4. 添加 CHECK 约束来限制 company_size 的值
+        $alterSql = "ALTER TABLE companies
+        ADD CONSTRAINT chk_company_size CHECK (company_size IN ('1-50', '51-200', '201-500', '500+'))";
+        $conn->exec($alterSql);
+        echo "Check constraint for company_size added successfully<br>";
+
+        
+        
+
         // 插入 companies 数据
         $sql = "INSERT INTO companies (u_id, company_name, industry, location, company_size, website, social_media, company_description)
         VALUES
@@ -61,7 +70,7 @@ try {
         $conn->exec($sql);
         echo "Inserted companies data successfully<br>";
 
-        // 创建 jobseekers 表
+        // create jobseekers table
         $sql = "CREATE TABLE IF NOT EXISTS jobseekers (
             u_id INT PRIMARY KEY,
             avatar BLOB,
@@ -69,15 +78,35 @@ try {
             short_intro TEXT,
             phone VARCHAR(20),
             email VARCHAR(255) NOT NULL,
-            GPA DECIMAL(3, 2) DEFAULT NULL CHECK (GPA < 4),  -- GPA 必须小于 4
+            GPA DECIMAL(3, 2) DEFAULT NULL ,  
             first_name VARCHAR(100) NOT NULL,
             family_name VARCHAR(100) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE
+            FOREIGN KEY (u_id) REFERENCES users(u_id) 
         )";
 
         $conn->exec($sql);
         echo "Table 'jobseekers' created successfully<br>";
+
+        // 添加 CHECK 约束来确保 GPA 的范围为 0 <= GPA <= 4
+        $alterSql = "ALTER TABLE jobseekers
+        ADD CONSTRAINT chk_gpa_range CHECK (GPA >= 0 AND GPA <= 4)";
+        $conn->exec($alterSql);
+        echo "Check constraint for GPA range added successfully<br>";
+
+        // 触发器：当删除 users 表中的记录时，删除 jobseekers 中相关的记录
+        $triggerSql = "
+        
+
+        CREATE TRIGGER delete_jobseeker_on_user_delete
+        AFTER DELETE ON users
+        FOR EACH ROW
+        BEGIN
+        DELETE FROM jobseekers WHERE u_id = OLD.u_id;
+        END  ;
+        ";
+        $conn->exec($triggerSql);
+        echo "Trigger for cascading delete on jobseekers added successfully<br>";
 
         // 插入 jobseekers 数据
         $sql = "INSERT INTO jobseekers (u_id, avatar, resume, short_intro, phone, email, GPA,first_name, family_name)
@@ -94,10 +123,28 @@ try {
             certification_name VARCHAR(255),
             certification_date DATE,
             issuing_organization VARCHAR(255),
-            FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE
+            FOREIGN KEY (u_id) REFERENCES users(u_id)
         )";
         $conn->exec($sql);
         echo "Table 'certifications' created successfully<br>";
+       
+        
+        $triggerSql = "
+        
+
+        CREATE TRIGGER delete_certifications_on_user_delete
+        AFTER DELETE ON users
+        FOR EACH ROW
+        BEGIN
+            DELETE FROM certifications WHERE u_id = OLD.u_id;
+        END  ;
+        ";
+        $conn->exec($triggerSql);
+
+
+        echo "Trigger for cascading delete on certifications added successfully<br>";
+
+
 
         // 插入 certifications 数据
         $sql = "INSERT INTO certifications (u_id, certification_name, certification_date, issuing_organization)
@@ -118,6 +165,24 @@ try {
         )";
         $conn->exec($sql);
         echo "Table 'language_skills' created successfully<br>";
+        
+        $triggerSql = "
+       
+
+        CREATE TRIGGER delete_language_skills_on_user_delete
+        AFTER DELETE ON users
+        FOR EACH ROW
+        BEGIN
+            DELETE FROM language_skills WHERE u_id = OLD.u_id;
+        END ;
+        ";
+
+
+        $conn->exec($triggerSql);
+
+
+        echo "Trigger for cascading delete on language_skills added successfully<br>";
+
 
         // 插入 language_skills 数据
         $sql = "INSERT INTO language_skills (u_id, language_name, proficiency_level)
@@ -137,10 +202,25 @@ try {
             start_date DATE,
             end_date DATE,
             job_description TEXT,
-            FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE
+            FOREIGN KEY (u_id) REFERENCES users(u_id) 
         )";
         $conn->exec($sql);
         echo "Table 'internships' created successfully<br>";
+       
+       // 触发器：当删除 users 表中的记录时，删除 internships 中相关的记录
+        $triggerSql = "
+        
+
+        CREATE TRIGGER delete_internships_on_user_delete
+        AFTER DELETE ON users
+        FOR EACH ROW
+        BEGIN
+            DELETE FROM internships WHERE u_id = OLD.u_id;
+        END ;
+        ";
+        $conn->exec($triggerSql);
+        echo "Trigger for cascading delete on internships added successfully<br>";
+
 
         // 插入 internships 数据
         $sql = "INSERT INTO internships (u_id, company_name, job_title, start_date, end_date, job_description)
@@ -159,10 +239,24 @@ try {
             start_date DATE,
             end_date DATE,
             activity_description TEXT,
-            FOREIGN KEY (u_id) REFERENCES users(u_id) ON DELETE CASCADE
+            FOREIGN KEY (u_id) REFERENCES users(u_id)
         )";
         $conn->exec($sql);
         echo "Table 'extracurricular_activities' created successfully<br>";
+
+        // 触发器：当删除 users 表中的记录时，删除 extracurricular_activities 中相关的记录
+        $triggerSql = "
+        
+
+        CREATE TRIGGER delete_extracurricular_activities_on_user_delete
+        AFTER DELETE ON users
+        FOR EACH ROW
+        BEGIN
+            DELETE FROM extracurricular_activities WHERE u_id = OLD.u_id;
+        END ;
+        ";
+        $conn->exec($triggerSql);
+        echo "Trigger for cascading delete on extracurricular_activities added successfully<br>";
 
         //  extracurricular_activities 
         $sql = "INSERT INTO extracurricular_activities (u_id, activity_name, position, start_date, end_date, activity_description)
@@ -185,8 +279,44 @@ try {
         ) ";
         $conn->exec($sql);
         echo "Table 'Applications' created successfully<br>";
-    }
 
+
+        $sql = "
+        CREATE TRIGGER before_insert_application
+        BEFORE INSERT ON applications
+        FOR EACH ROW
+        BEGIN
+             -- Validate if the user is a job seeker (assuming user type 3 or 0 represents a job seeker)
+            DECLARE user_type INT;
+            DECLARE resume_url VARCHAR(255);
+
+            -- Get the user type and resume URL
+            SELECT user_type_id, resume INTO user_type, resume_url
+            FROM users
+            LEFT JOIN jobSeekers ON users.u_id = jobSeekers.u_id
+            WHERE users.u_id = NEW.user_id;
+
+            -- Validate user type
+            IF user_type NOT IN (3, 0) THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You are not a job seeker, and therefore cannot apply for jobs.';
+            END IF;
+
+            -- Validate if the resume is uploaded
+            IF resume_url IS NULL OR resume_url = '' THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You have not uploaded your resume yet. Please update your profile and upload your resume before applying for jobs.';
+            END IF;
+
+            -- Check if the user has already applied for the job
+            IF EXISTS (SELECT 1 FROM applications WHERE job_id = NEW.job_id AND user_id = NEW.user_id) THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'You have already applied for this job.';
+            END IF;
+
+        END;";
+
+    $conn->exec($sql);
+    echo "Trigger 'before_insert_application' created successfully<br>";
+        }
+     
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
 }

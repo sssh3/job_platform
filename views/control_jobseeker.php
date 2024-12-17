@@ -252,6 +252,13 @@ if (isset($_POST['action']) && $_POST['action'] == 'closePopup') {
                             <input type="hidden" name="application_id" value="<?php echo $application['application_id']; ?>">
                             <button type="submit" name="action" value="withdraw" class="withdraw-button">Withdraw Application</button>
                         </form>
+                    
+                    <!-- 添加“联系雇主”按钮 -->
+                    <form method="GET" action="/job_platform/communicate" class="status-buttons">
+                    <input type="hidden" name="chat_id" value="<?php echo $application['company_name']; ?>"> <!-- 使用正确的 company_id -->
+                    <input type="hidden" name="job_id" value="<?php echo $application['job_id']; ?>">
+                    <button type="submit" class="withdraw-button">Contact Employer</button>
+                    </form>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
