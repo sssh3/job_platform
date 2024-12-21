@@ -4,11 +4,11 @@
 
 The entire project folder should be put directly in the `htdocs` folder. For example, `xamppfiles/htdocs/job_platform`   
 
-When the server runs `index.php` the first time, `config/database.php` will try to create schema `job_platform_db` if it does not exists and then insert more than 100,000 simulated rows. It may takes a few seconds. For old computers, it could exceed 120s and throw timeout error. You may alter the amount of simulated job instances by changing this line `$totalJobs = 90000;` in `config/database.php`. You can also adjust `$numEmployers` and `$numJobseekers` in `config/database.php`. Or delete lines in `data/cities15000.txt`.   
+At the homepage, if the database is not already created. You need to create the database through two options: run PHP scripts or manually import `/job_platform/assets/data/job_platform_db.sql` in `phpmyadmin`. It is recommended for **old computers** to manually import the database. If the database creating scripts raise timeout errors, you may alter the amount of simulated job instances by changing this line `$totalJobs = 90000;` in `config/database.php`. You can also adjust `$numEmployers` and `$numJobseekers` in `config/database.php`. Or delete lines in `data/cities15000.txt`.   
 
 Simulated job instances are distributed into each city based on its population porpotion.  
 
-Some features are still under developing.
+
 
 ## Project Structure
 ```
