@@ -449,3 +449,15 @@ footer {
     margin-top: 30px;
     padding: 20px 0;
 }
+
+#dropdown-country, #dropdown-city, #dropdown-province {
+    position: absolute;
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    background-color: white;
+    z-index: 1000;
+    font-size: 20px;
+}

@@ -1,6 +1,8 @@
 
 <?php 
-session_start(); 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $parse = parse_url($_SERVER['REQUEST_URI']);
 $path = $parse['path'];
 if ($path !== '/job_platform/login') {

@@ -25,6 +25,10 @@ index.php: Entry point for the application
 /uploads: Stores uploaded files, note that avatars are stored in SQL database
 ```
 
+## Shape of the Database after Initialization
+The database has 16 tables and more than 210,000 rows.  
+![databse_shape.png](assets/images/database_shape.png)
+
 ## Version Control Instruction
 ### Set Up Git
 **Install Git:** All team members should have Git installed. You can download it from `git-scm.com`.

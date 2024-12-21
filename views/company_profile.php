@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -29,13 +32,13 @@ try {
         $website = $company['website'];
         $social_media = $company['social_media'];
         $company_description = $company['company_description'];
-        $address_id = $company['address_id']; // Fetch address_id
+        $address_id = $company['location']; // Fetch address_id
         $company_exists = true;
 
         // 查询地址信息（国家、省份、城市）
         $stmtAddress = $pdo->prepare("SELECT countries.name AS country, provinces.admin1_name AS province, cities.city_name AS city
                                      FROM cities
-                                     JOIN provinces ON provinces.admin1_code = cities.admin1_code
+                                     JOIN provinces ON provinces.admin1_code = cities.admin1_code AND provinces.country_code = cities.country_code
                                      JOIN countries ON countries.code = cities.country_code
                                      WHERE cities.address_id = :address_id");
         $stmtAddress->execute(['address_id' => $address_id]);
@@ -44,6 +47,7 @@ try {
             $country = $address['country'];
             $province = $address['province'];
             $city = $address['city'];
+            $location = $city . ', ' . $province . ', ' . $country;
         } else {
             $country = $province = $city = '';
         }
@@ -106,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // 插入新公司资料
         $insertStmt = $pdo->prepare("INSERT INTO companies 
-                                     (u_id, company_name, industry, company_size, website, social_media, company_description, address_id) 
+                                     (u_id, company_name, industry, company_size, website, social_media, company_description, `location`) 
                                      VALUES 
                                      (:companyId, :company_name, :industry, :company_size, :website, :social_media, :company_description, :address_id)");
         $insertStmt->execute([
@@ -122,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // 更新后重定向
-    header('Location: job_platform/views/company_profile.php');
+    header('Location: /job_platform/views/company_profile.php');
     exit;
 }
 ?>
@@ -163,9 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="profile-section">
                     <h3>Company Details</h3>
                     <ul>
-                        <li><strong>Company Size:</strong> <?php echo $company_size; ?></li>
-                        <li><strong>Website:</strong> <a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a></li>
-                        <li><strong>Social Media:</strong> <a href="https://twitter.com/<?php echo $social_media; ?>" target="_blank">Twitter</a></li>
+                        <li><strong>Company Size: </strong> <?php echo $company_size; ?></li>
+                        <li><strong>Website: </strong> <a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a></li>
+                        <li><strong>Social Media: </strong><?php echo $social_media; ?></li>
                     </ul>
                 </div>
             <?php endif; ?>
@@ -179,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="industry">Industry:</label>
                     <input type="text" id="industry" name="industry" value="<?php echo $company_exists ? $industry : ''; ?>" required><br>
 
-                    <label>Select Job Location:</label>
+                    <label>Select Company Location:</label>
                     <input type="text" id="search-country" name="search-country" placeholder="select country/region" autocomplete="off" required><br>
                     <div id="dropdown-country"></div>
                     <script src="/job_platform/assets/js/searchCountry.js"></script>
@@ -193,8 +197,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <script src="/job_platform/assets/js/searchCity.js"></script>
                     <br>
 
-                    <label for="company_size">Company Size:</label>
-                    <input type="text" id="company_size" name="company_size" value="<?php echo $company_exists ? $company_size : ''; ?>"><br>
+                    <label for="company_size">Select Company Size:</label>
+                    <select id="company_size" name="company_size" required>
+                        <option value="" disabled selected>--Select company size--</option>
+                        <option value="1-50" <?php echo ($company_exists && $company_size == '1-50') ? 'selected' : ''; ?>>1-50</option>
+                        <option value="51-200" <?php echo ($company_exists && $company_size == '51-200') ? 'selected' : ''; ?>>51-200</option>
+                        <option value="201-500" <?php echo ($company_exists && $company_size == '201-500') ? 'selected' : ''; ?>>201-500</option>
+                        <option value="500+" <?php echo ($company_exists && $company_size == '500+') ? 'selected' : ''; ?>>500+</option>
+                    </select>
+                    <br><br>
 
                     <label for="website">Website:</label>
                     <input type="url" id="website" name="website" value="<?php echo $company_exists ? $website : ''; ?>"><br>

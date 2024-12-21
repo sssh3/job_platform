@@ -42,7 +42,7 @@ try {
             u_id INT NOT NULL,
             company_name VARCHAR(255) NOT NULL,
             industry VARCHAR(100),
-            location VARCHAR(255),
+            `location` INT,
             company_size ENUM('1-50', '51-200', '201-500', '500+'),
             website VARCHAR(255),
             social_media VARCHAR(255),
@@ -65,7 +65,7 @@ try {
         // 插入 companies 数据
         $sql = "INSERT INTO companies (u_id, company_name, industry, location, company_size, website, social_media, company_description)
         VALUES
-            (1, 'Tech Innovators', 'Technology', 'Beijing', '51-200', 'https://www.techinnovators.com', 'https://twitter.com/techinnovators', 'Innovative tech solutions for a better future.')
+            (1, 'Tech Innovators', 'Technology', 4262, '51-200', 'https://www.techinnovators.com', 'https://twitter.com/techinnovators', 'Innovative tech solutions for a better future.')
         ";
         $conn->exec($sql);
         echo "Inserted companies data successfully<br>";

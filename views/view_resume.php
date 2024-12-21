@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -6,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$u_id = $_SESSION['user_id'];
+$u_id = $_GET['user_id'];
 
 $host = 'localhost';
 $db = 'job_platform_db';  
@@ -57,7 +60,6 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <link rel="stylesheet" href="/job_platform/assets/css/jobseekerStyle.css">
     <title>Jobseeker Resume</title>
 </head>
@@ -93,11 +95,15 @@ try {
         <!-- Basic Info Section -->
         <div class="profile-section">
             <h3>Basic Information</h3>
-            <p><strong>Name:</strong> <?php echo $jobseeker['first_name'] . " " . $jobseeker['family_name']; ?></p>
-            <p><strong>Email:</strong> <?php echo $jobseeker['email']; ?></p>
-            <p><strong>GPA:</strong> <?php echo $jobseeker['GPA']; ?></p>
-            <p><strong>Phone:</strong> <?php echo $jobseeker['phone']; ?></p>
-            <p><strong>Short Intro:</strong> <?php echo $jobseeker['short_intro']; ?></p>
+            <?php if ($jobseeker): ?>
+                <p><strong>Name:</strong> <?php echo htmlspecialchars($jobseeker['first_name'] . " " . $jobseeker['family_name']); ?></p>
+                <p><strong>Email:</strong> <?php echo htmlspecialchars($jobseeker['email']); ?></p>
+                <p><strong>GPA:</strong> <?php echo htmlspecialchars($jobseeker['GPA']); ?></p>
+                <p><strong>Phone:</strong> <?php echo htmlspecialchars($jobseeker['phone']); ?></p>
+                <p><strong>Short Intro:</strong> <?php echo htmlspecialchars($jobseeker['short_intro']); ?></p>
+            <?php else: ?>
+                <p>No jobseeker found with the specified ID.</p>
+            <?php endif; ?>
         </div>
 
         <!-- Certifications Section -->
@@ -145,7 +151,7 @@ try {
             <h3>Resume</h3>
             <?php if ($jobseeker['resume']) : ?>
                 <p>Current Resume: 
-                    <a href="uploads/<?php echo htmlspecialchars($jobseeker['resume']); ?>" target="_blank">Download</a>
+                    <a href="<?php echo htmlspecialchars($jobseeker['resume']); ?>" target="_blank">Download</a>
                 </p>
             <?php else : ?>
                 <p>No resume uploaded.</p>
