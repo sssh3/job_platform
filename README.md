@@ -29,7 +29,7 @@ index.php: Entry point for the application
 The database has 16 tables and more than 210,000 rows.  
 ![databse_shape.png](assets/images/database_shape.png)
 
-## Version Control Instruction
+<!-- ## Version Control Instruction
 ### Set Up Git
 **Install Git:** All team members should have Git installed. You can download it from `git-scm.com`.
 ```
@@ -60,7 +60,7 @@ git commit -m "Your descriptive commit message"
 ```
 You can see the status with `git status`.
 
-3. Push your branch to remote by `git push origin your-branch-name`
+3. Push your branch to remote by `git push origin your-branch-name` -->
 
 
 ## Columns 
